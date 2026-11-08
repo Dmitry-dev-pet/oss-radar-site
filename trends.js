@@ -7,7 +7,7 @@ const number = new Intl.NumberFormat("ru-RU");
 function repositoryName(candidate) {
   if (typeof candidate !== "string") return null;
   const value = candidate.trim();
-  if (NAME.test(value)) return value;
+  if (NAME.test(value) && !value.split("/").some(part => part==="." || part==="..")) return value;
   try {
     const url = new URL(value);
     if (url.protocol !== "https:") return null;
@@ -16,7 +16,7 @@ function repositoryName(candidate) {
     else if (url.hostname !== "github.com") return null;
     if (parts.length < 2) return null;
     const result = parts[0] + "/" + parts[1].replace(/\.git$/i, "");
-    return NAME.test(result) ? result : null;
+    return NAME.test(result) && !result.split("/").some(part => part==="." || part==="..") ? result : null;
   } catch { return null; }
 }
 function toPlainText(input) {
