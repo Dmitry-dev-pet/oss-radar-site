@@ -1,4 +1,4 @@
-name: October trending historical API verification
+name: October trending full historical API verification
 
 on:
   pull_request:
@@ -14,16 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
-      - name: Query public GitStock archive (Oct 1-2 and 4-9, 2026)
+      - name: Query public GitStock archive for ALL 31 days of October 2026
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import json, pathlib, time, urllib.request, urllib.parse, urllib.error
-          from datetime import date,datetime,timezone
+          from datetime import date,datetime,timezone,timedelta
           root=pathlib.Path("october-2026-backfill")
           root.mkdir(exist_ok=True)
-          dates=["2026-10-01","2026-10-02","2026-10-04","2026-10-05","2026-10-06","2026-10-07","2026-10-08","2026-10-09"]
+          dates=[(date(2026,10,1)+timedelta(days=i)).isoformat() for i in range(31)]
           results=[]
           for day in dates:
               url="https://gitstock.org/api/v1/github/trending?"+urllib.parse.urlencode({"period":"daily","date":day})
@@ -66,7 +66,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: october-2026-api-verification
+          name: october-2026-full-api-verification
           path: october-2026-backfill/*.json
           if-no-files-found: warn
           retention-days: 7
