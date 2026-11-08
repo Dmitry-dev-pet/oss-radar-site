@@ -3,6 +3,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse, unquote
 import re
+import json
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,7 +35,8 @@ class TestEditorialOnly(unittest.TestCase):
             parsed = InspectHTML()
             parsed.feed(html)
             self.assertEqual(len(parsed.headings), 1, path.name)
-            self.assertFalse(parsed.scripts, path.name)
+            self.assertTrue(all(x.get("src")=="./review-catalog.js" for x in parsed.scripts), path.name)
+            self.assertEqual(len(parsed.scripts), 1 if path.name=="index.html" else 0)
             for banned in ('href="./trends.html"', 'href="./october.html"',
                            'href="#catalog"', 'src="./app.js"', 'data/manifest.json'):
                 self.assertNotIn(banned, html, path.name)
@@ -69,11 +71,36 @@ class TestEditorialOnly(unittest.TestCase):
         self.assertGreaterEqual(page.count("Что проверить:"), 4)
         self.assertIn("githubtrending.today/methodology/", page)
 
+    def test_editorial_catalog_is_local_and_matches_published_articles(self):
+        catalog = json.loads((ROOT / "reviews/catalog.json").read_text(encoding="utf-8"))
+        self.assertEqual(catalog["schema_version"], 1)
+        allowed = {"weekly", "monthly", "deep", "comparison", "experiment"}
+        items = catalog["articles"]
+        self.assertEqual(len(items), len({x["id"] for x in items}))
+        self.assertTrue(items)
+        for row in items:
+            self.assertIn(row["type"], allowed)
+            self.assertRegex(row["date"], r"^\d{4}-\d{2}-\d{2}$")
+            self.assertRegex(row["url"], r"^reviews/[a-z0-9-]+\.html$")
+            self.assertTrue((ROOT / row["url"]).is_file())
+            self.assertTrue(row["projects"])
+            self.assertTrue(row["trending_source"])
+            self.assertTrue(row["trending_seen_at"])
+            self.assertTrue(row["trending_evidence"].startswith("https://"))
+            self.assertIn(row["verification"], {"documentation","source","executed"})
+        client = (ROOT / "review-catalog.js").read_text(encoding="utf-8")
+        self.assertIn('fetch("./reviews/catalog.json"', client)
+        self.assertNotIn("githubtrending.today/api",client)
+        self.assertNotIn("api.github.com",client)
+        self.assertNotIn("localStorage",client)
+
     def test_only_editorial_files_are_published_without_cron(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
         self.assertNotIn("  schedule:", workflow)
         self.assertNotIn("import_trends.py", workflow)
         self.assertNotIn("trends.js", workflow)
+        self.assertIn("review-catalog.js", workflow)
+        self.assertIn("catalog.json", workflow)
         self.assertNotIn("cp -R data", workflow)
         self.assertIn("reviews", workflow)
         self.assertIn("test_editorial_site.py", workflow)
