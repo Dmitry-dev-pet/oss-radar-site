@@ -49,7 +49,7 @@ function featuredCard(data,compact){
    elem("span",{class:"stars"},starFmt.format(data.s)+" ★"));
   article.append(top,elem("h3",{},data.n.split("/")[1]),elem("p",{},data.d));
   const bottom=elem("div",{class:"bottom"});
-  bottom.append(elem("a",{href:repoURL(data.n)||"#",target:"_blank",rel:"noopener noreferrer"},"Открыть GitHub ↗"));
+  bottom.append(elem("a",{href:repoURL(data.n)||"#",target:"_blank",rel:"noopener noreferrer"},"Открыть GitHub ↗"), elem("a",{href:"./trends.html?repo="+encodeURIComponent(data.n)+"#history"},"История звёзд"));
   article.append(bottom);
  }
  return article;
@@ -86,6 +86,8 @@ function projectCard(item){
  meta.append(elem("span",{class:"stars"},starFmt.format(item.s)+" ★"));
  meta.append(elem("span",{class:"tag"},labels[item.c]||labels.other));
  meta.append(elem("span",{class:"tag "+(item.l?"green":"amber")},item.l||"лицензия не указана"));
+ const trend=elem("a",{class:"subtle-link",href:"./trends.html?repo="+encodeURIComponent(item.n)+"#history"},"Динамика звёзд");
+ meta.append(trend);
  card.append(top,desc,meta);return card;
 }
 function applyFilters(){
