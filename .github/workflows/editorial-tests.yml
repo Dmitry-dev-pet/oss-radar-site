@@ -1,0 +1,25 @@
+name: OSS Radar — editorial integrity checks
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'reviews/**'
+      - 'style.css'
+      - 'tests/test_editorial_site.py'
+      - '.github/workflows/pages.yml'
+      - '.github/workflows/editorial-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-editorial-format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify trend provenance and review-only links (offline)
+        run: python3 -m unittest discover -s tests -p 'test_editorial_site.py' -v
