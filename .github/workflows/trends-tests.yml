@@ -59,6 +59,12 @@ jobs:
                               for key,value in list(payload.items())[:14]:
                                   if isinstance(value,dict):
                                       output["shape_"+key]={"keys":list(value)[:12]}
+                                      if key=="lists":
+                                          for listname in ["all:daily","all:weekly","all:monthly","python:daily"]:
+                                              entry=value.get(listname)
+                                              output["example_"+listname]=str(entry[:2] if isinstance(entry,list) else entry)[:700]
+                                      elif key=="meta":
+                                          output["example_meta"]=str(next(iter(value.values()),None))[:700]
                                   elif isinstance(value,list):
                                       output["shape_"+key]={"length":len(value), "first_keys":list(value[0])[:20] if value and isinstance(value[0],dict) else []}
                                   else:
