@@ -21,3 +21,48 @@ jobs:
         run: node --test tests/trends.test.js
       - name: Syntax validation
         run: node --check trends.js
+
+  provider-contract-probe:
+    # One-shot checks on a public repo. Does not copy or persist third-party datasets.
+    if: github.event_name == 'pull_request' && github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Inspect provider JSON shapes and browser CORS headers
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request, urllib.error
+          targets = [
+              ("github-trending-feed", "https://githubtrending.today/feed.json"),
+              ("oss-insight", "https://api.ossinsight.io/v1/trends/repos/?period=past_24_hours&language=All"),
+              ("github-star-history", "https://api.github.com/repos/CopilotKit/OpenDuet/stargazers/history?per_page=1"),
+          ]
+          for label,url in targets:
+              try:
+                  request = urllib.request.Request(url, headers={"User-Agent":"oss-radar-contract/1.0",
+                    "Accept":"application/json","Origin":"https://dmitry-dev-pet.github.io",
+                    "X-GitHub-Api-Version":"2026-03-10"})
+                  with urllib.request.urlopen(request, timeout=20) as response:
+                      payload = json.load(response)
+                      cors = response.headers.get("Access-Control-Allow-Origin")
+                      output = {"source":label,"status":response.status,"cors":cors,
+                                "top_type":type(payload).__name__}
+                      if isinstance(payload,dict):
+                          output["keys"]=list(payload)[:20]
+                          if label=="github-trending-feed":
+                              items=payload.get("items")
+                              output["items"]=len(items) if isinstance(items,list) else "invalid"
+                              output["first_item_keys"]=list(items[0]) if isinstance(items,list) and items else []
+                              output["first_item_url"]=items[0].get("url") if isinstance(items,list) and items else None
+                          elif label=="oss-insight":
+                              rows=payload.get("data",{}).get("rows",[]) if isinstance(payload.get("data"),dict) else []
+                              output["rows"]=len(rows)
+                              output["first_row_keys"]=list(rows[0]) if rows else []
+                      elif isinstance(payload,list):
+                          output["items"]=len(payload)
+                          output["first_keys"]=list(payload[0]) if payload else []
+                      print(json.dumps(output, ensure_ascii=False),flush=True)
+              except Exception as exc:
+                  print(json.dumps({"source":label,"probe_error":type(exc).__name__,
+                                    "reason":str(exc)[:200]}),flush=True)
+          PY
