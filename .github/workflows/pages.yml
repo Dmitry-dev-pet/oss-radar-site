@@ -1,0 +1,72 @@
+name: Publish OSS Radar (public GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'october.html'
+      - 'app.js'
+      - 'style.css'
+      - 'data/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.repository == 'Dmitry-dev-pet/oss-radar-site' &&
+      github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest # public repository: standard runner does not use private Actions minutes
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate source and assemble static publish directory
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s index.html
+          test -s october.html
+          test -s style.css
+          test -s app.js
+          test -s data/manifest.json
+          python3 - <<'PY'
+          import json, pathlib
+          root=pathlib.Path("data")
+          manifest=json.loads((root/"manifest.json").read_text())
+          assert manifest["total"] == 12188
+          assert len(manifest["months"]) == 13
+          total=0
+          for month in manifest["months"]:
+              data=json.loads((root/(month["month"]+".json")).read_text())
+              assert data["month"] == month["month"]
+              assert data["count"] == len(data["projects"]) == month["count"]
+              assert all(x["u"].startswith("https://github.com/") and 50 <= x["s"] <= 2000 for x in data["projects"])
+              total+=len(data["projects"])
+          assert total == 12188
+          print("Validated 13 public monthly datasets and 12,188 records")
+          PY
+          mkdir -p _site
+          cp index.html october.html style.css app.js _site/
+          cp -R data _site/
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
