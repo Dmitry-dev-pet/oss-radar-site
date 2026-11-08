@@ -34,6 +34,7 @@ jobs:
           import json, urllib.request, urllib.error
           targets = [
               ("github-trending-feed", "https://githubtrending.today/feed.json"),
+              ("github-trending-all", "https://githubtrending.today/api/trending.json"),
               ("oss-insight", "https://api.ossinsight.io/v1/trends/repos/?period=past_24_hours&language=All"),
               ("github-star-history", "https://api.github.com/repos/CopilotKit/OpenDuet/stargazers/history?per_page=1"),
           ]
@@ -54,6 +55,14 @@ jobs:
                               output["items"]=len(items) if isinstance(items,list) else "invalid"
                               output["first_item_keys"]=list(items[0]) if isinstance(items,list) and items else []
                               output["first_item_url"]=items[0].get("url") if isinstance(items,list) and items else None
+                          elif label=="github-trending-all":
+                              for key,value in list(payload.items())[:14]:
+                                  if isinstance(value,dict):
+                                      output["shape_"+key]={"keys":list(value)[:12]}
+                                  elif isinstance(value,list):
+                                      output["shape_"+key]={"length":len(value), "first_keys":list(value[0])[:20] if value and isinstance(value[0],dict) else []}
+                                  else:
+                                      output["shape_"+key]=str(value)[:75]
                           elif label=="oss-insight":
                               rows=payload.get("data",{}).get("rows",[]) if isinstance(payload.get("data"),dict) else []
                               output["rows"]=len(rows)
