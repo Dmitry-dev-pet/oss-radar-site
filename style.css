@@ -109,3 +109,21 @@ p { margin:0 0 1.3em; }
   .hero-actions .button {flex:1;}
 }
 @media(prefers-reduced-motion:reduce) {html{scroll-behavior:auto;}}
+
+/* Editorial-only article catalog. No repository rankings or external API traffic. */
+.review-filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:14px;margin:20px 0;padding:17px;border:1px solid var(--line);background:var(--surface);border-radius:12px}
+.review-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.review-field label{font-size:.78rem;font-weight:700;color:var(--muted)}
+.review-field input,.review-field select{width:100%;height:44px;color:var(--text);background:var(--bg);border:1px solid #43596a;border-radius:8px;padding:8px 10px;font:inherit}
+.review-field input:focus-visible,.review-field select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.archive-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;align-items:stretch}
+.archive-review{max-width:none;display:flex;flex-direction:column;gap:8px;min-width:0}
+.archive-review p{flex:1;font-size:.91rem}
+.archive-review h3{font-size:clamp(1.22rem,2vw,1.52rem)}
+.archive-review .button{align-self:start;margin-top:5px}
+.archive-review .issue-meta{margin-bottom:6px}
+.archive-review .review-keywords{margin:4px 0 10px}
+.review-counter{font-size:.85rem;color:var(--muted);margin:0 0 17px}
+[hidden]{display:none!important}
+@media(max-width:800px){.review-filters{grid-template-columns:1fr 1fr}.review-search{grid-column:1 / -1}.archive-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.review-filters{grid-template-columns:1fr}.review-search{grid-column:auto}.archive-review{padding:20px}}

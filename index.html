@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b121c">
 <meta name="description" content="OSS Radar: критические обзоры проектов из трендов GitHub. Что устроено интересно, где ограничения и что стоит проверить.">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'">
 <title>OSS Radar — разборы проектов из GitHub Trending</title>
 <link rel="stylesheet" href="./style.css">
+<script defer src="./review-catalog.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Перейти к содержимому</a>
@@ -22,21 +23,49 @@
     <div class="eyebrow">Критический разбор open-source проектов</div>
     <h1>Тренды — повод.<br><span class="accent">Разбор — главное.</span></h1>
     <p class="hero-lead">Отбираем проекты, появившиеся в трендах GitHub, и выясняем, есть ли за популярностью интересная архитектура, работающая идея и польза на практике.</p>
-    <p class="intro-note">Здесь нет бесконечного каталога, автоматического топа по звёздам и советов устанавливать непроверенный код. Только редакторские обзоры с источниками и ограничениями.</p>
+    <p class="intro-note">Здесь нет бесконечного каталога, автоматического топа по звёздам и советов устанавливать непроверенный код. Только редакторские обзоры с источниками и ограничениями. Каталог ниже позволяет искать именно публикации.</p>
   </section>
 
   <section class="container section" id="issues" aria-labelledby="issue-heading">
     <div class="section-head">
-      <div><div class="eyebrow">Свежий выпуск · 8 ноября 2026</div><h2 id="issue-heading">Четыре подхода к агентной инфраструктуре</h2>
-      <p class="section-intro">Браузер для агентов, многоэтапный аудит безопасности, локальные боты с компьютером и сжатие длительных диалогов. Все четыре проекта попали в дневной GitHub Trending; мы проверили их README и разобрали не только обещания, но и ограничения.</p></div>
+      <div>
+        <div class="eyebrow">Архив публикаций · разные форматы</div>
+        <h2 id="issue-heading">Каталог разборов</h2>
+        <p class="section-intro">Недельные обзоры, месячная аналитика, глубокие исследования, сравнения и эксперименты. Здесь только опубликованные статьи, а не список популярных репозиториев.</p>
+      </div>
     </div>
-    <article class="lead-review">
-      <div class="issue-meta"><span class="meta-item">№ 01</span><span class="meta-item">Источник: GitHub Trending, 08.11.2026</span><span class="meta-item">Документальный разбор · без запуска кода</span></div>
-      <h3>Что действительно полезно в новых инструментах для AI-агентов?</h3>
-      <p>Сравниваем четыре разные инженерные границы: действия в браузере, проверку безопасности, полномочия виртуального компьютера и управление контекстом. Отдельно — что стоит проверять экспериментом и что пока остаётся заявлением авторов.</p>
-      <div class="review-keywords" aria-label="Проекты в выпуске"><span>agent-browser</span><span>security-audit-skill</span><span>OpenMausBot</span><span>billion-context</span></div>
-      <a class="button" href="./reviews/2026-11-08.html">Читать разбор <span aria-hidden="true">↗</span></a>
-    </article>
+    <div class="review-filters" role="search" aria-label="Поиск по публикациям">
+      <div class="review-field review-search">
+        <label for="searchReviews">Найти разбор</label>
+        <input id="searchReviews" type="search" placeholder="Например: агенты, браузер, безопасность" autocomplete="off">
+      </div>
+      <div class="review-field">
+        <label for="typeReviews">Тип публикации</label>
+        <select id="typeReviews">
+          <option value="all">Все типы</option>
+          <option value="weekly">Обзор недели</option>
+          <option value="monthly">Аналитика месяца</option>
+          <option value="deep">Глубокий разбор</option>
+          <option value="comparison">Сравнение</option>
+          <option value="experiment">Эксперимент</option>
+        </select>
+      </div>
+      <div class="review-field">
+        <label for="topicReviews">Направление</label>
+        <select id="topicReviews"><option value="all">Все направления</option></select>
+      </div>
+    </div>
+    <p id="reviewCount" class="review-counter" aria-live="polite">Загружаем каталог публикаций…</p>
+    <div id="reviewCards" class="archive-grid">
+      <article class="lead-review archive-review">
+        <div class="issue-meta"><span class="meta-item">8 ноября 2026</span><span class="meta-item">Сравнение · документальный разбор</span></div>
+        <h3>Четыре подхода к агентной инфраструктуре</h3>
+        <p>Браузерная автоматизация, безопасность, локальные боты и управление контекстом.</p>
+        <a class="button" href="./reviews/2026-11-08.html">Читать разбор</a>
+      </article>
+    </div>
+    <p id="reviewEmpty" class="intro-note" hidden>Пока нет опубликованных материалов с выбранными фильтрами. Исследования без проверки не публикуем.</p>
+    <noscript><p class="intro-note">Поиск по каталогу требует JavaScript; опубликованный разбор доступен по ссылке выше.</p></noscript>
   </section>
 
   <section class="container section" id="method" aria-labelledby="method-heading">

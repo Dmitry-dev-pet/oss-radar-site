@@ -23,3 +23,5 @@ jobs:
           persist-credentials: false
       - name: Verify trend provenance and review-only links (offline)
         run: python3 -m unittest discover -s tests -p 'test_editorial_site.py' -v
+      - name: Validate local catalog JavaScript syntax
+        run: node --check review-catalog.js

@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'review-catalog.js'
+      - 'reviews/catalog.json'
       - 'reviews/**'
       - 'style.css'
       - 'tests/test_editorial_site.py'
@@ -39,20 +41,25 @@ jobs:
         run: |
           set -euo pipefail
           test -s index.html
+          test -s review-catalog.js
+          test -s reviews/catalog.json
+          node --check review-catalog.js
           test -s style.css
           test -s reviews/2026-11-08.html
           python3 -m unittest discover -s tests -p 'test_editorial_site.py' -v
           mkdir -p _site/reviews
-          cp index.html style.css _site/
-          cp reviews/*.html _site/reviews/
+          cp index.html style.css review-catalog.js _site/
+          cp reviews/*.html reviews/catalog.json _site/reviews/
           touch _site/.nojekyll
           test -s _site/index.html
           test -s _site/reviews/2026-11-08.html
+          test -s _site/reviews/catalog.json
+          test -s _site/review-catalog.js
           ! test -e _site/trends.html
           ! test -e _site/october.html
           ! test -e _site/app.js
           ! test -e _site/data
-          echo "Packaged editorial-only Pages: no catalog, no trends UI, no scheduled importer."
+          echo "Packaged editorial review catalog: no repository catalog, no trends UI, no scheduled importer."
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

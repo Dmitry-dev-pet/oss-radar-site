@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-08",
+  "description": "Редакторские разборы из датированных GitHub Trending; не каталог репозиториев",
+  "review_types": {
+    "weekly": "Обзор недели",
+    "monthly": "Аналитика месяца",
+    "deep": "Глубокий разбор",
+    "comparison": "Сравнение",
+    "experiment": "Эксперимент"
+  },
+  "articles": [
+    {
+      "id": "R-20261108-agent-infrastructure",
+      "date": "2026-11-08",
+      "title": "Четыре подхода к агентной инфраструктуре",
+      "subtitle": "Что действительно полезно в новых инструментах для AI-агентов?",
+      "summary": "Браузер для агентов, многоэтапный аудит, локальные боты и управление длинными диалогами — технические механизмы, ограничения и вопросы для проверки.",
+      "type": "comparison",
+      "verification": "documentation",
+      "tags": [
+        "AI-агенты",
+        "Безопасность",
+        "Инструменты разработки"
+      ],
+      "projects": [
+        "vercel-labs/agent-browser",
+        "cloudflare/security-audit-skill",
+        "milind-soni/OpenMausBot",
+        "ranxianglei/billion-context"
+      ],
+      "trending_source": "GitHub Trending Today",
+      "trending_seen_at": "2026-11-08T06:58:00Z",
+      "trending_evidence": "https://githubtrending.today/methodology/",
+      "url": "reviews/2026-11-08.html"
+    }
+  ]
+}
