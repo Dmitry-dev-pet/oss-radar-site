@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b121c">
+<meta name="description" content="OSS Radar, выпуск 8 ноября 2026: критический разбор agent-browser, security-audit-skill, OpenMausBot и billion-context — проектов из GitHub Trending.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'self'">
+<title>Четыре инструмента для AI-агентов — OSS Radar</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#main">Перейти к содержимому</a>
+<header class="site-header"><div class="container header-inner">
+<a class="brand" href="../index.html" aria-label="OSS Radar — главная"><span class="brand-mark" aria-hidden="true">◎</span> OSS Radar</a>
+<nav class="nav" aria-label="Навигация"><a href="../index.html#issues">Выпуски</a><a href="#sources">Источники</a></nav>
+</div></header>
+<main id="main">
+<section class="container review-hero">
+<div class="eyebrow">Выпуск № 01 · 8 ноября 2026 · анализ GitHub Trending</div>
+<h1>AI-агентам дают инструменты.<br><span class="accent">Кто контролирует их действия?</span></h1>
+<p class="hero-lead">Четыре проекта из дневных трендов GitHub обещают решить разные проблемы: управление браузером, аудит безопасности, работу нескольких ботов и сжатие долгих сессий. Их объединяет вопрос, который важнее количества звёзд: где проходят границы доверия и насколько результат воспроизводим.</p>
+<div class="issue-meta"><span class="meta-item">4 проекта из трендов</span><span class="meta-item">Проверены публичные README</span><span class="meta-item">Код не выполнялся</span></div>
+<aside class="notice"><strong>Статус исследования:</strong> документальный разбор, а не испытание или сертификация безопасности. Тренд подтверждён снимком <a href="https://githubtrending.today/" target="_blank" rel="noopener noreferrer">GitHub Trending Today</a> за <strong>8 ноября 2026, 06:58 UTC</strong>. Порядок и звёзды, приведённые ниже, принадлежат источнику; более поздние снимки могут отличаться. Сведения о возможностях взяты из документации авторов.</aside>
+</section>
+<div class="container article-layout">
+<article class="prose">
+<section class="article-intro" id="question">
+<h2>Главная мысль</h2>
+<p>Тренд показывает, что проект привлёк внимание, но не объясняет причину и ничего не гарантирует о его качестве. Здесь мы выбрали не четыре самых высоких значения прироста, а четыре разных технических решения. Все присутствовали в дневной трендовой выдаче в указанном снимке.</p>
+<p>Любой из этих инструментов может быть полезен без превращения в самостоятельную платформу: браузерный CLI — как исполнитель ограниченных действий, аудит — как проверяемый процесс, бот-платформа — как пример разграничения полномочий, сжатие — как стратегия работы с контекстом. Прежде чем применять их в настоящих проектах, нужны тесты на наших задачах и оценка прав доступа.</p>
+</section>
+
+<section class="project-section" id="browser">
+<div class="project-kicker">01 · Браузерная автоматизация · тренд #1, +190 ★ за день</div>
+<h2>agent-browser — действия через наблюдаемый интерфейс</h2>
+<p><strong>Что делает:</strong> Rust CLI для управления браузером. Агент получает текстовый снимок страницы, выбирает ссылку или кнопку по идентификатору элемента, выполняет действие, затем может снять новое состояние. Это удобнее свободной последовательности кликов без проверки результата.</p>
+<p><strong>Что подтверждается документацией:</strong> команды <code>open</code>, <code>snapshot</code>, <code>click</code>, <code>get</code>; работа через фоновый процесс с Chrome DevTools Protocol; отдельные браузерные сессии, запись и сравнение состояний. Исходная документация предупреждает, что после изменения DOM прежние ссылки на элементы могут устареть.</p>
+<p><strong>Ограничение:</strong> наличие API для браузера не решает автоматически проблемы доверия к тексту страницы, авторизации и секретов. Неясно, насколько устойчивы конкретные сценарии при динамическом DOM, диалогах согласия и ограничениях сайтов. Установку и поведение мы не тестировали.</p>
+<p><strong>Что проверить:</strong> на открытом тестовом сайте выполнить 20 повторов сценария «открыть → заполнить → подтвердить → проверить результат», записать ошибки и различить успешное действие от ошибочного отчёта об успехе. Только потом решать, нужен ли отдельный браузерный исполнитель.</p>
+<p class="source-row"><a href="https://github.com/vercel-labs/agent-browser" target="_blank" rel="noopener noreferrer">Исходники и README</a> · <a href="https://agent-browser.dev/security" target="_blank" rel="noopener noreferrer">Модель безопасности</a></p>
+</section>
+
+<section class="project-section" id="security">
+<div class="project-kicker">02 · Security workflow · тренд #2, +2 085 ★ за день</div>
+<h2>security-audit-skill — сначала покрытие, потом вывод</h2>
+<p><strong>Что делает:</strong> задаёт coding agent последовательность аудита: картографирование поверхностей и границ доверия, распределение проверок, верификация находок отдельным агентом, структурированный реестр и отчёт.</p>
+<p><strong>Интересное техническое решение:</strong> <code>coverage-ledger.json</code> фиксирует, что проверялось, а <code>findings.json</code> разделяет подтверждённые, отклонённые и требующие проверки результаты. Скрипты-валидаторы проверяют форму отчёта; повторные проходы учитывают незакрытые зоны и изменившийся код. Это гораздо сильнее простой просьбы к модели «найди уязвимости».</p>
+<p><strong>Ограничение:</strong> машиночитаемая запись и второй агент сами по себе не делают доказательство независимым. Одинаковая ошибка модели может повториться у проверяющего; полноту покрытия и реальные эксплойты придётся проверять вне LLM. Авторы описывают процесс, но его результативность на наших репозиториях не измерялась.</p>
+<p><strong>Что проверить:</strong> взять публичный учебный репозиторий с заранее известными уязвимостями, сравнить найденные подтверждённые дефекты, ложные срабатывания и пропуски с обычным code review, сохранив исходные логи проверки.</p>
+<p class="source-row"><a href="https://github.com/cloudflare/security-audit-skill" target="_blank" rel="noopener noreferrer">Исходники и README</a> · <a href="https://github.com/cloudflare/security-audit-skill/blob/main/report-schema.json" target="_blank" rel="noopener noreferrer">Схема находок</a></p>
+</section>
+
+<section class="project-section" id="bots">
+<div class="project-kicker">03 · Платформа агентов · тренд #9, +1 955 ★ за день</div>
+<h2>OpenMausBot — отдельные боты и отдельные компьютеры</h2>
+<p><strong>Что делает:</strong> приложение, организованное как мессенджер с несколькими ботами. Автор описывает выбор разных локально установленных coding CLI, отдельные каналы, историю сообщений, карточки согласования действий и предоставление боту облачной или локальной вычислительной среды.</p>
+<p><strong>Интересное техническое решение:</strong> разговор, набор инструментов, вычислительный контекст и разрешение на рискованное действие представлены как разные сущности. Права не должны появляться лишь потому, что бот получил сообщение в чате.</p>
+<p><strong>Ограничение:</strong> «local-first» не означает полную автономность: проект отдельно использует внешние модели, может подключать облачные компьютеры и каталог интеграций Composio. Установка на компьютер с рабочими токенами требует собственной оценки изоляции, а не доверия к заявлению об approval cards.</p>
+<p><strong>Что проверить:</strong> в отдельной пустой VM создать двух ботов, один с правом чтения тестовой папки, другой без него. Убедиться, что запрет нельзя обойти через общий канал, инструмент или запрос к стороннему API. Ни одну реальную учётную запись к такому пилоту не подключать.</p>
+<p class="source-row"><a href="https://github.com/milind-soni/OpenMausBot" target="_blank" rel="noopener noreferrer">Исходники и README</a> · <a href="https://github.com/milind-soni/OpenMausBot/tree/main/docs" target="_blank" rel="noopener noreferrer">Техническая документация</a></p>
+</section>
+
+<section class="project-section" id="context">
+<div class="project-kicker">04 · Контекст и память · тренд #14, +191 ★ за день</div>
+<h2>billion-context — сжатие вместо бесконечного окна</h2>
+<p><strong>Что делает:</strong> прокси и плагины для coding agents, позволяющие сворачивать старые фрагменты диалога в многоуровневые сводки и запрашивать восстановление деталей. В документации указаны операции <code>compress</code>, <code>decompress</code>, <code>search_context</code>, <code>acp_status</code>.</p>
+<p><strong>Интересное техническое решение:</strong> не пытаться поместить всю историю в один запрос, а контролировать, что модель в данный момент видит в контексте, и отдельно управлять доступом к сжатым сведениям. Это полезная противоположность идее, что увеличение контекстного окна автоматически решает задачи длительных агентных сессий.</p>
+<p><strong>Ограничение:</strong> название проекта и обещание «миллиардов токенов» не означают, что модель одновременно рассуждает по всему этому объёму. Сводки теряют детали, восстановление создаёт задержки и дополнительные вызовы, а указанные авторами коэффициенты экономии и benchmark не воспроизводились нами. Отдельно нужно проверить лицензию: GitHub не распознаёт SPDX, README указывает на дополнительное условие атрибуции сверх MIT.</p>
+<p><strong>Что проверить:</strong> одинаковые задачи на длинной истории GitHub Issue/PR с точными вопросами о давних фактах, сравнив обычное резюме, поиск по исходникам и этот прокси. Измерять не только токены, но и точность ссылок на первичные записи, стоимость восстановления и ошибочную «память».</p>
+<p class="source-row"><a href="https://github.com/ranxianglei/billion-context" target="_blank" rel="noopener noreferrer">Исходники и README</a> · <a href="https://github.com/ranxianglei/billion-context/blob/master/docs/clients.md" target="_blank" rel="noopener noreferrer">Совместимость с клиентами</a></p>
+</section>
+
+<section class="verdict" id="conclusion">
+<div class="eyebrow">Редакторский итог</div>
+<h2>Что из этого брать в работу?</h2>
+<p><strong>Ближайшая проверка:</strong> методика <em>security-audit-skill</em> — как модель учёта покрытия, доказательств и независимого перепроверяющего. Не обязательно устанавливать инструмент: сперва можно воспроизвести принцип на синтетическом PR.</p>
+<p><strong>Второй приоритет:</strong> <em>billion-context</em> — не как обещание безграничной памяти, а как эксперимент над восстановлением точных фактов из длинной истории.</p>
+<p><strong>На уровне архитектуры:</strong> <em>agent-browser</em> полезен как отдельный исполнитель проверяемых действий, а <em>OpenMausBot</em> — для сравнения границ доверия между ботами. Ни тот ни другой пока не обоснован как обязательная замена существующей инфраструктуры.</p>
+<p>Здесь речь об очередности исследований, не о рекомендации устанавливать программы. Изученные README подтверждают описанную модель работы, но не подтверждают её надёжность при исполнении.</p>
+</section>
+
+<section class="project-section" id="sources">
+<h2>Откуда взялись эти проекты</h2>
+<p><strong>Первичный сигнал:</strong> дневная выдача <a href="https://githubtrending.today/" target="_blank" rel="noopener noreferrer">GitHub Trending Today</a>, снятая <strong>08.11.2026 в 06:58 UTC</strong>. Сервис сохраняет порядок <a href="https://github.com/trending" target="_blank" rel="noopener noreferrer">GitHub Trending</a> и числа «stars gained»; не рассчитывает собственный рейтинг качества. Его составление и архив лицензированы <a href="https://githubtrending.today/methodology/" target="_blank" rel="noopener noreferrer">CC BY 4.0 с указанием источника</a>. В статье использованы только четыре показанные в той выдаче позиции, не весь рейтинг.</p>
+<p><strong>Содержательная проверка:</strong> публичные README четырёх авторских GitHub-репозиториев, ссылки в соответствующих разделах. Файлы, бенчмарки и реальные установки мы не проверяли; заявления авторов об эффективности обозначены именно как заявления.</p>
+<p><strong>Ограничения:</strong> дата попадания в тренды не равна дате рождения идеи; GitHub-звёзды не измеряют качество, безопасность или воспроизводимость. Динамика GitHub Trending может измениться уже через несколько часов; поэтому здесь всегда указано время снимка, а не слово «сегодня» без даты.</p>
+</section>
+<a class="button secondary" href="../index.html">К другим выпускам</a>
+</article>
+<aside class="toc" aria-label="Содержание статьи"><div class="eyebrow">В статье</div>
+<a href="#question">Главная мысль</a>
+<a href="#browser">agent-browser</a>
+<a href="#security">security-audit-skill</a>
+<a href="#bots">OpenMausBot</a>
+<a href="#context">billion-context</a>
+<a href="#conclusion">Что проверять</a>
+<a href="#sources">Источники и методика</a>
+</aside>
+</div>
+</main>
+<footer class="site-footer"><div class="container footer-inner"><strong>OSS Radar</strong><span>Критические разборы трендовых open-source проектов · 2026</span></div></footer>
+</body>
+</html>
