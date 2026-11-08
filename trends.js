@@ -164,8 +164,7 @@ async function showHistory(name) {
     const open = elem("a", "subtle-link", "Открыть GitHub репозиторий");
     open.href = "https://github.com/" + repo; open.target="_blank"; open.rel="noopener noreferrer";
     output.append(summary, list, open);
-    status("История " + repo + " · официальный GitHub API; 12 последних недель из ответа.");
-    history.replaceChildren;
+    status("История " + repo + " · официальный GitHub API; до 12 последних недель из ответа.");
   } catch (e) {
     status("Не удалось получить историю (" + e.message + "). Возможны лимиты GitHub или ограничение доступа браузера.");
   }
