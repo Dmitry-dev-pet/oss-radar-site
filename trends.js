@@ -1,7 +1,5 @@
 "use strict";
 /* No collector or credentials: external open feed + GitHub's public star-history REST API. */
-const FEED = "https://githubtrending.today/feed.json";
-const INSIGHT = "https://api.ossinsight.io/v1/trends/repos/?period=past_24_hours&language=All";
 const API_VERSION = "2026-03-10";
 const NAME = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/;
 const number = new Intl.NumberFormat("ru-RU");
@@ -24,31 +22,22 @@ function repositoryName(candidate) {
 function toPlainText(input) {
   return typeof input === "string" ? input.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 230) : "";
 }
-function parseJsonFeed(json) {
-  if (!json || !Array.isArray(json.items)) throw new Error("Источник вернул не JSON Feed");
-  const seen = new Set();
-  return json.items.map(item => {
-    const repo = repositoryName(item.external_url) ||
-      repositoryName(item.url) || repositoryName(item.title);
-    if (!repo || seen.has(repo.toLowerCase())) return null;
-    seen.add(repo.toLowerCase());
-    return {repo, description: toPlainText(item.summary || item.title || ""),
-      link: "https://github.com/" + repo};
-  }).filter(Boolean).slice(0, 25);
+function parseMirror(json) {
+  if (!json || json.schema !== 1 || json.source !== "GitHub Trending Today" ||
+      !json.lists || !Array.isArray(json.lists["all:daily"]) ||
+      !Array.isArray(json.lists["all:weekly"]) || !Array.isArray(json.lists["all:monthly"]) ||
+      !Number.isFinite(Date.parse(json.collected_at))) {
+    throw new Error("Неизвестная версия импортированной подборки");
+  }
+  for (const period of ["daily","weekly","monthly"]) {
+    for (const item of json.lists["all:"+period]) {
+      if (!repositoryName(item.name) || !Number.isInteger(item.gained) || item.gained < 0)
+        throw new Error("Некорректные метрики в подборке");
+    }
+  }
+  return json;
 }
-function parseInsight(json) {
-  const rows = json && json.data && json.data.rows;
-  if (!Array.isArray(rows)) throw new Error("Неизвестный формат OSS Insight");
-  const seen = new Set();
-  return rows.map(row => {
-    const repo = repositoryName(row.repo_name) || repositoryName(row.full_name) ||
-      repositoryName(row.repo) || repositoryName(row.repo_url) || repositoryName(row.url);
-    if (!repo || seen.has(repo.toLowerCase())) return null;
-    seen.add(repo.toLowerCase());
-    return {repo, description: toPlainText(row.description || ""),
-      link: "https://github.com/" + repo};
-  }).filter(Boolean).slice(0, 25);
-}
+
 function parseHistory(json) {
   if (!Array.isArray(json)) throw new Error("GitHub вернул не список недель");
   const out = json.map(row => {
@@ -81,45 +70,71 @@ function elem(tag, css, value) {
   return e;
 }
 function status(message) { document.getElementById("historyStatus").textContent = message; }
-function renderTrendList(records, origin) {
+let mirror = null;
+const PERIOD = {daily:"день",weekly:"неделю",monthly:"месяц"};
+const LANG = {all:"Все языки",python:"Python",typescript:"TypeScript",javascript:"JavaScript",
+              rust:"Rust",go:"Go",java:"Java",cpp:"C++"};
+function updateLanguages() {
+  const period = document.getElementById("trendPeriod").value;
+  const select = document.getElementById("trendLanguage");
+  const last = select.value;
+  select.replaceChildren();
+  for (const [key,label] of Object.entries(LANG)) {
+    if (!Array.isArray(mirror?.lists?.[key+":"+period])) continue;
+    const opt = elem("option","",label);
+    opt.value = key; select.append(opt);
+  }
+  select.value = Array.from(select.options).some(x=>x.value===last)?last:"all";
+}
+function renderTrends() {
+  if (!mirror) return;
+  const period = document.getElementById("trendPeriod").value;
+  const language = document.getElementById("trendLanguage").value;
+  const records = mirror.lists[language+":"+period] || [];
   const container = document.getElementById("trendResults");
   container.replaceChildren();
-  for (const [index, row] of records.entries()) {
-    const card = elem("article", "project-card");
-    const heading = elem("h3", "", (index+1) + ". " + row.repo);
-    const desc = elem("p", "project-desc", row.description || "Описание в исходном каталоге");
-    const group = elem("div", "trend-actions");
-    const see = elem("a", "subtle-link", "Динамика звёзд");
-    see.href = "./trends.html?repo=" + encodeURIComponent(row.repo) + "#history";
-    const source = elem("a", "subtle-link", "GitHub");
-    source.href = row.link; source.target = "_blank"; source.rel = "noopener noreferrer";
-    group.append(see, source);
-    card.append(heading, desc, group);
-    container.append(card);
+  for (const row of records) {
+    const name = repositoryName(row.name);
+    if (!name) continue;
+    const card = elem("article","project-card");
+    card.append(elem("h3","",(row.rank||"–")+". "+name));
+    card.append(elem("p","project-desc",row.description||"Описание отсутствует"));
+    const tags = elem("div","project-meta");
+    tags.append(elem("span","stars","+"+number.format(row.gained)+" ★ за "+PERIOD[period]));
+    tags.append(elem("span","tag",number.format(row.stars)+" ★ всего"));
+    if (row.language) tags.append(elem("span","tag",row.language));
+    if (row.license_declared) tags.append(elem("span","tag",row.license_declared+" (заявлена)"));
+    const links = elem("div","trend-actions");
+    const dynamics = elem("a","subtle-link","История звёзд");
+    dynamics.href = "./trends.html?repo="+encodeURIComponent(name)+"#history";
+    const github = elem("a","subtle-link","GitHub");
+    github.href = "https://github.com/"+name; github.target="_blank"; github.rel="noopener noreferrer";
+    links.append(dynamics,github);
+    card.append(tags,links);container.append(card);
   }
   document.getElementById("trendProvenance").textContent =
-    "Источник: " + origin + ". Позиции отражают выдачу провайдера, не наш рейтинг.";
+    "Данные GitHub Trending Today, CC BY 4.0; снято "+mirror.collected_at+
+    ". Прирост и порядок рассчитаны источником по его методике, не OSS Radar.";
+  if (!records.length) container.append(elem("p","muted","Нет данных для выбранного периода и языка."));
 }
 async function showTrends() {
   const state = document.getElementById("trendStatus");
-  for (const source of [
-    {url: FEED, parse: parseJsonFeed, label: "GitHub Trending Today (JSON Feed, CC BY 4.0)"},
-    {url: INSIGHT, parse: parseInsight, label: "OSS Insight (public API)"}
-  ]) {
-    try {
-      const response = await fetch(source.url, {headers: {"Accept": "application/json"}});
-      if (!response.ok) throw new Error("HTTP " + response.status);
-      const payload = await response.json();
-      const rows = source.parse(payload);
-      if (!rows.length) throw new Error("Нет распознанных репозиториев");
-      renderTrendList(rows, source.label);
-      state.textContent = "Загружено " + rows.length + " проектов через открытый API; обновляется самим источником.";
-      return;
-    } catch (e) { /* Try second provider; no stale or invented data. */ }
+  try {
+    const response = await fetch("./data/external-trends.json", {cache:"no-store"});
+    if (!response.ok) throw new Error("HTTP "+response.status);
+    mirror = parseMirror(await response.json());
+    const hours = (Date.now()-Date.parse(mirror.collected_at))/3600000;
+    state.textContent = "Снимок источника: "+mirror.collected_at+
+      (hours>30?" · данные устарели, проверь оригинал":" · данные провайдера, не наш рейтинг");
+    document.getElementById("trendPeriod").disabled = false;
+    document.getElementById("trendLanguage").disabled = false;
+    updateLanguages();renderTrends();
+  } catch (error) {
+    state.textContent = "Не удалось загрузить публичную подборку ("+error.message+
+      "). Откройте источник по ссылке ниже; устаревшие данные не выдаются за текущие.";
   }
-  state.textContent = "Открытые API недоступны из этого браузера или изменили формат. " +
-    "Ниже есть прямые ссылки на источники — рейтинг не подменяется старыми данными.";
 }
+
 function formatWeek(unix) {
   return new Intl.DateTimeFormat("ru-RU", {timeZone:"UTC", day:"2-digit",month:"short",year:"numeric"})
     .format(new Date(unix * 1000));
@@ -178,8 +193,12 @@ function start() {
   });
   const preset = new URLSearchParams(window.location.search).get("repo");
   if (preset) showHistory(preset);
+  document.getElementById("trendPeriod").addEventListener("change",()=>{
+    if (mirror) { updateLanguages();renderTrends(); }
+  });
+  document.getElementById("trendLanguage").addEventListener("change", renderTrends);
   showTrends();
 }
 if (typeof module !== "undefined" && module.exports)
-  module.exports = {repositoryName, parseJsonFeed, parseInsight, parseHistory, recentBins};
+  module.exports = {repositoryName, parseMirror, parseHistory, recentBins};
 if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded",start);
