@@ -4,6 +4,8 @@ on:
     paths:
       - 'trends.js'
       - 'trends.html'
+      - 'scripts/import_trends.py'
+      - 'tests/test_import_trends.py'
       - 'tests/trends.test.js'
       - '.github/workflows/trends-tests.yml'
   workflow_dispatch:
@@ -18,7 +20,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Node.js built-in tests (no network/no dependencies)
-        run: node --test tests/trends.test.js
+        run: |
+          node --test tests/trends.test.js
+          python3 -m unittest discover -s tests -p 'test_import_trends.py' -v
       - name: Syntax validation
         run: node --check trends.js
 
@@ -28,6 +32,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Live read-only compiled JSON import smoke
+        run: python3 scripts/import_trends.py --output /tmp/oss-radar-external-trends.json
       - name: Inspect provider JSON shapes and browser CORS headers
         run: |
           python3 - <<'PY'
