@@ -1,0 +1,23 @@
+name: OSS Radar — external feeds contracts
+on:
+  pull_request:
+    paths:
+      - 'trends.js'
+      - 'trends.html'
+      - 'tests/trends.test.js'
+      - '.github/workflows/trends-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-independent-parsers:
+    runs-on: ubuntu-latest # Public repository, no private Actions quota
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Node.js built-in tests (no network/no dependencies)
+        run: node --test tests/trends.test.js
+      - name: Syntax validation
+        run: node --check trends.js
