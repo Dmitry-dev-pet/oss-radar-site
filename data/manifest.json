@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "snapshot": "2026-11-08",
+  "total": 12188,
+  "months": [
+    {
+      "month": "2025-11",
+      "count": 922,
+      "partialBands": 4,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2025-12",
+      "count": 967,
+      "partialBands": 4,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-01",
+      "count": 1000,
+      "partialBands": 5,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-02",
+      "count": 1000,
+      "partialBands": 5,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-03",
+      "count": 1000,
+      "partialBands": 5,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-04",
+      "count": 1000,
+      "partialBands": 5,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-05",
+      "count": 953,
+      "partialBands": 4,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-06",
+      "count": 946,
+      "partialBands": 4,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-07",
+      "count": 938,
+      "partialBands": 4,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-08",
+      "count": 953,
+      "partialBands": 4,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-09",
+      "count": 939,
+      "partialBands": 4,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-10",
+      "count": 937,
+      "partialBands": 4,
+      "snapshot": "2026-11-08"
+    },
+    {
+      "month": "2026-11",
+      "count": 633,
+      "partialBands": 3,
+      "snapshot": "2026-11-08"
+    }
+  ],
+  "source": "GitHub Search API month and current-star-band sample; last full month October 2026",
+  "warning": "Not exhaustive; stars are current total at snapshot, not observed growth. Licenses are unverified GitHub declarations.",
+  "featuredMonth": "2026-10"
+}
