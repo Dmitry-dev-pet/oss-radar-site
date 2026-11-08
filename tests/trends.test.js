@@ -1,7 +1,7 @@
 "use strict";
 const {test} = require("node:test");
 const assert = require("node:assert/strict");
-const {repositoryName, parseJsonFeed, parseInsight, parseHistory, recentBins} = require("../trends.js");
+const {repositoryName, parseMirror, parseHistory, recentBins} = require("../trends.js");
 
 test("only valid public GitHub repository names are accepted", () => {
   assert.equal(repositoryName("CopilotKit/OpenDuet"), "CopilotKit/OpenDuet");
@@ -12,24 +12,18 @@ test("only valid public GitHub repository names are accepted", () => {
     assert.equal(repositoryName(bad), null);
   }
 });
-test("JSON Feed handles deduped original repo URLs and attribution", () => {
-  const entries = parseJsonFeed({items: [
-    {url:"https://githubtrending.today/repo/a/b",summary:"<b>Hello</b>   world"},
-    {external_url:"https://github.com/a/b",title:"duplicate"},
-    {external_url:"https://github.com/c/d",summary:"Another project"}
-  ]});
-  assert.deepEqual(entries.map(x=>x.repo), ["a/b","c/d"]);
-  assert.equal(entries[0].description,"Hello world");
+test("mirrored source requires dated, validated daily weekly monthly lists", () => {
+  const payload = {schema:1,source:"GitHub Trending Today",collected_at:"2026-11-08T21:07:56Z",
+    lists:{"all:daily":[{name:"a/b",gained:5,stars:100}],
+           "all:weekly":[{name:"a/b",gained:20,stars:100}],
+           "all:monthly":[{name:"a/b",gained:90,stars:100}]}};
+  assert.equal(parseMirror(payload).lists["all:daily"][0].gained,5);
+  assert.throws(()=>parseMirror({...payload,collected_at:"bad"}),/Неизвестная версия/);
+  assert.throws(()=>parseMirror({...payload,lists:{"all:daily":[]}}),/Неизвестная версия/);
+  assert.throws(()=>parseMirror({...payload,lists:{...payload.lists,"all:daily":[{name:"a/b",gained:-5}]}}),
+    /Некорректные метрики/);
 });
-test("unknown feed payload fails rather than inventing results", () => {
-  assert.throws(() => parseJsonFeed({items:{}}), /JSON Feed/);
-  assert.deepEqual(parseJsonFeed({items: []}), []);
-});
-test("OSS Insight tabular rows are parsed if feed is unavailable", () => {
-  assert.deepEqual(parseInsight({data:{rows:[{repo_name:"a/b"},{repo_name:"a/b"},{repo:"c/d"}]}})
-    .map(x=>x.repo), ["a/b","c/d"]);
-  assert.throws(() => parseInsight({data:{}}), /OSS Insight/);
-});
+
 test("GitHub star history rejects malformed or inconsistent weekly buckets", () => {
   assert.throws(() => parseHistory([{week:123,total:4,days:[1,2,3]}]), /формат/);
   assert.throws(() => parseHistory([{week:123,total:3,days:[0,0,0,0,0,0,1]}]), /Сумма/);
