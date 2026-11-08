@@ -8,11 +8,16 @@ on:
       - 'october.html'
       - 'trends.html'
       - 'trends.js'
+      - 'scripts/import_trends.py'
+      - 'tests/test_import_trends.py'
+      - 'tests/trends.test.js'
       - 'app.js'
       - 'style.css'
       - 'data/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
+  schedule:
+    - cron: '37 8 * * *' # UTC, daily refresh of third-party compiled public JSON
 
 permissions:
   contents: read
@@ -47,6 +52,7 @@ jobs:
           test -s trends.js
           node --check trends.js
           node --test tests/trends.test.js
+          python3 -m unittest discover -s tests -p 'test_import_trends.py' -v
           test -s style.css
           test -s app.js
           test -s data/manifest.json
@@ -69,6 +75,7 @@ jobs:
           mkdir -p _site
           cp index.html october.html trends.html trends.js style.css app.js _site/
           cp -R data _site/
+          python3 scripts/import_trends.py --output _site/data/external-trends.json
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
