@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09101a">
+  <meta name="description" content="OSS Radar — обзор новых GitHub-проектов: от редакторских находок до помесячного каталога 12 188 репозиториев.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'">
+  <title>OSS Radar — интересные проекты с GitHub</title>
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <a class="tiny is-hidden" id="skipLink" href="#main">Перейти к содержимому</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html" aria-label="OSS Radar, главная"><span class="brand-mark" aria-hidden="true">◎</span> OSS Radar</a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="#featured">Находки</a>
+        <a href="#catalog">Каталог</a>
+        <a href="./october.html">Обзор</a>
+        <a href="#method" class="optional">Методика</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="container hero" aria-labelledby="heroTitle">
+      <div class="eyebrow">Исследовательский навигатор по открытым репозиториям</div>
+      <h1 id="heroTitle">Не просто звёзды. <span class="accent">Интересные идеи.</span></h1>
+      <p class="hero-lead">Помесячный каталог новых GitHub-проектов и независимые редакторские обзоры. Ищем то, что стоит исследовать, проверять и пробовать — от ИИ-агентов до робототехники.</p>
+      <div class="hero-actions">
+        <a class="button" href="./october.html">Читать обзор октября <span aria-hidden="true">↗</span></a>
+        <a class="button secondary" href="#catalog">Исследовать каталог</a>
+      </div>
+      <div class="stats" aria-label="Статистика каталога">
+        <div class="stat"><div class="stat-number" id="totalCount">12 188</div><div class="stat-label">найденных проектов</div></div>
+        <div class="stat"><div class="stat-number" id="monthCount">13</div><div class="stat-label">месяцев создания</div></div>
+        <div class="stat"><div class="stat-number">08.11.26</div><div class="stat-label">дата снимка</div></div>
+      </div>
+    </section>
+    <div class="container">
+      <aside class="notice" aria-label="Условия интерпретации данных"><strong>Важно:</strong> это выборка по месяцу создания репозитория и числу звёзд на 8 ноября 2026 года. Звёзды не показывают прирост за месяц. Большинство диапазонов неполные, лицензии указаны по метаданным GitHub и отдельно не проверены.</aside>
+    </div>
+    <section id="featured" class="container section" aria-labelledby="featuredTitle">
+      <div class="section-head">
+        <div><div class="eyebrow">Редакторский выбор · октябрь 2026</div><h2 id="featuredTitle">10 проектов, на которые стоит посмотреть</h2><p class="section-intro">Не рейтинг по звёздам: отбираем по интересной задаче, открытой документации и возможности проверки.</p></div>
+        <a class="subtle-link" href="./october.html">Полный обзор ↗</a>
+      </div>
+      <div id="featuredGrid" class="featured-grid" aria-live="polite"></div>
+      <div id="moreFeatures" class="compact-list is-hidden"></div>
+      <div class="section-cta"><button id="showFeatures" class="button secondary" type="button" aria-expanded="false">Показать ещё 7 проектов</button></div>
+    </section>
+    <section id="catalog" class="catalog-wrap section" aria-labelledby="catalogTitle">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">Данные · 13 месяцев</div><h2 id="catalogTitle">Каталог репозиториев</h2><p class="section-intro">Найди проект по имени, назначению или лицензии. Для скорости загружаются только данные выбранного месяца.</p></div>
+        </div>
+        <div class="filters" role="search">
+          <div class="field search-field"><label for="searchInput">Поиск по названию и описанию</label><input id="searchInput" type="search" placeholder="Например: OCR, robot, MCP…" autocomplete="off"></div>
+          <div class="field"><label for="monthSelect">Месяц создания</label><select id="monthSelect" aria-label="Месяц создания"></select></div>
+          <div class="field"><label for="categorySelect">Тематика</label><select id="categorySelect"><option value="all">Все направления</option><option value="agents">ИИ и агенты</option><option value="robots">Робототехника</option><option value="documents">Документы / OCR</option><option value="data">Данные / БД</option><option value="dev">Разработка</option><option value="security">Безопасность</option><option value="design">Дизайн / UI</option><option value="other">Другое</option></select></div>
+          <div class="field"><label for="sortSelect">Сортировка</label><select id="sortSelect"><option value="stars-desc">Звёзды: больше</option><option value="stars-asc">Звёзды: меньше</option><option value="name">Название А–Я</option></select></div>
+        </div>
+        <div class="filter-line">
+          <p id="resultsInfo" class="muted tiny" aria-live="polite">Загружаем каталог…</p>
+          <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <label class="check-field"><input type="checkbox" id="licenseOnly"> Только с заявленной лицензией</label>
+            <label class="check-field"><input type="checkbox" id="favoritesOnly"> Избранное</label>
+          </div>
+        </div>
+        <div id="catalogGrid" class="catalog-grid" aria-live="polite"><p class="loading">Загрузка каталога…</p></div>
+        <div id="emptyState" class="no-results is-hidden">По этому запросу ничего не найдено. Попробуй другой месяц или убери фильтр.</div>
+        <div id="catalogAction" class="catalog-action is-hidden"><button class="button secondary" id="loadMore" type="button">Показать ещё</button></div>
+      </div>
+    </section>
+    <section class="container section" id="method" aria-labelledby="methodTitle">
+      <div class="eyebrow">Наблюдения, а не рейтинг</div><h2 id="methodTitle">Как мы это собираем</h2>
+      <div class="method">
+        <div><p>Публичные сведения получены через GitHub Search API и проверены по месяцам создания. Сбор выполнялся на собственном Mac M4, без коммерческих скраперов и модели, придумывающей названия. Каталог показывает только сохранённые результаты.</p><p>Редакторский обзор октября основан на документации авторов и отдельно отмечает внешние сервисы, ограничения лицензий и отсутствие независимых тестов.</p></div>
+        <div>
+          <ul><li><strong>Месяц:</strong> дата создания репозитория, не дата релиза.</li><li><strong>Звёзды:</strong> общее число на дату снимка, не скорость роста.</li><li><strong>Лицензия:</strong> декларация GitHub, не правовой аудит.</li><li><strong>Тематика:</strong> автоматическая рубрика по описанию, возможны ошибки.</li><li><strong>Покрытие:</strong> до 200 проектов на диапазон звёзд в месяц, середина диапазона иногда пропущена.</li></ul>
+        </div>
+      </div>
+      <a class="subtle-link" href="./october.html#method">Методика отбора октябрьской десятки ↗</a>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><div><strong>OSS Radar</strong><div>Публичная витрина проектов GitHub. Без аналитики посетителей, аккаунтов и рекламы.</div></div><div class="footer-links"><a href="./october.html">Редакторский обзор</a><a href="https://github.com/Dmitry-dev-pet/oss-radar-site" target="_blank" rel="noopener noreferrer">Исходники сайта ↗</a></div></div></footer>
+</body>
+</html>
