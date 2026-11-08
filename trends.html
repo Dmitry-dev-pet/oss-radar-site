@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09101a">
+<meta name="description" content="OSS Radar: готовые трендовые списки и история звёзд GitHub без собственного сборщика.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<title>Тренды и история звёзд — OSS Radar</title>
+<link rel="stylesheet" href="./style.css"><script defer src="./trends.js"></script>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="./index.html" class="brand"><span class="brand-mark" aria-hidden="true">◎</span> OSS Radar</a>
+<nav class="nav" aria-label="Навигация"><a href="./index.html#featured">Находки</a><a href="./index.html#catalog">Каталог</a><a class="active" href="./trends.html" aria-current="page">Тренды</a><a href="./october.html">Обзор</a></nav>
+</div></header>
+<main>
+<section class="container review-hero"><div class="eyebrow">Открытые источники · без нового сборщика</div>
+<h1>Что растёт <span class="accent">на GitHub?</span></h1>
+<p class="hero-lead">Готовые публичные подборки и история звёзд через официальный API GitHub. Мы не выдаём старый каталог за живой рейтинг и не собираем заново историю тысяч репозиториев.</p>
+<aside class="notice"><strong>Суть:</strong> GitHub Trending Today публикует собственную выборку из GitHub Trending, а OSS Insight — альтернативную подборку. Они не охватывают все репозитории и используют разные методики. GitHub Pages импортирует готовый JSON GitHub Trending Today при публикации, чтобы не зависеть от браузерных ограничений CORS. Ошибка импорта не заменяется придуманными цифрами.</aside>
+</section>
+<section class="container section" id="trending">
+<div class="section-head"><div><div class="eyebrow">От сторонних проектов</div><h2>Актуальные списки</h2><p class="section-intro" id="trendStatus" aria-live="polite">Получаем открытые данные…</p><p class="muted tiny" id="trendProvenance">Порядок задаёт источник данных, не OSS Radar.</p></div></div>
+<div class="filters trend-filters">
+<div class="field"><label for="trendPeriod">Период</label><select id="trendPeriod" disabled><option value="daily">За день</option><option value="weekly">За неделю</option><option value="monthly">За месяц</option></select></div>
+<div class="field"><label for="trendLanguage">Язык</label><select id="trendLanguage" disabled><option value="all">Все языки</option></select></div>
+</div>
+<div class="catalog-grid" id="trendResults"></div>
+<div class="method">
+<p>Источник: <a class="subtle-link" href="https://githubtrending.today/" target="_blank" rel="noopener noreferrer">GitHub Trending Today</a> · <a class="subtle-link" href="https://githubtrending.today/methodology/" target="_blank" rel="noopener noreferrer">методика и лицензия CC BY 4.0</a> · <a class="subtle-link" href="https://githubtrending.today/api/trending.json" target="_blank" rel="noopener noreferrer">JSON-данные</a>.</p>
+<p>Альтернатива: <a class="subtle-link" href="https://ossinsight.io/" target="_blank" rel="noopener noreferrer">OSS Insight</a> · <a class="subtle-link" href="https://ossinsight.io/docs/api/list-trending-repos" target="_blank" rel="noopener noreferrer">документация публичного API</a>.</p>
+</div>
+</section>
+<section class="container section" id="history">
+<div class="section-head"><div><div class="eyebrow">Официальный источник</div><h2>История звёзд любого репозитория</h2><p class="section-intro">GitHub возвращает недельные корзины с разбивкой по дням. Не нужен сервер, база, токен или семь дней предварительных наблюдений.</p></div></div>
+<form class="history-form" id="repoForm">
+<div class="field"><label for="repoInput">Репозиторий GitHub</label><input id="repoInput" type="text" placeholder="Например: CopilotKit/OpenDuet" autocomplete="off" maxlength="180"></div>
+<button class="button" type="submit">Показать историю</button>
+</form>
+<p class="muted tiny" id="historyStatus" aria-live="polite">Укажите проект из каталога или введите owner/repo.</p>
+<div id="historyResults"></div>
+<p class="muted tiny">Источник: <a class="subtle-link" href="https://docs.github.com/en/rest/activity/starring#get-repository-star-history" target="_blank" rel="noopener noreferrer">GitHub REST — Get repository star history</a>. Данные отражают созданные звёзды (не чистое изменение общего счётчика) и имеют свои календарные границы. Возможны ограничения частоты запросов.</p>
+</section>
+</main>
+<footer class="site-footer"><div class="container footer-inner"><div><strong>OSS Radar</strong><div>Публичный каталог и ссылки на оригинальные источники. Без нашего фонового мониторинга звёзд.</div></div><div class="footer-links"><a href="./index.html#catalog">Каталог</a><a href="./october.html">Обзор</a></div></div></footer>
+</body></html>
