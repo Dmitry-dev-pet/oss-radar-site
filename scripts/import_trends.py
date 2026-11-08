@@ -47,7 +47,8 @@ def normalize(raw, now=None):
             if not isinstance(row, dict):
                 raise ValueError("invalid project row")
             name = row.get("name")
-            if not isinstance(name, str) or not NAME.fullmatch(name):
+            if (not isinstance(name, str) or not NAME.fullmatch(name) or
+                    any(part in (".", "..") for part in name.split("/"))):
                 continue
             if name.casefold() in unique:
                 continue
