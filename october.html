@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09101a">
+<meta name="description" content="OSS Radar: десять интересных проектов, появившихся на GitHub в октябре 2026 года. Возможности, ограничения и идеи для проверки.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self' data:; script-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Октябрь 2026 — OSS Radar</title><link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="./index.html" class="brand"><span class="brand-mark" aria-hidden="true">◎</span> OSS Radar</a>
+<nav class="nav" aria-label="Навигация"><a href="./index.html#featured">Находки</a><a href="./index.html#catalog">Каталог</a><a class="active" href="./october.html" aria-current="page">Обзор</a></nav>
+</div></header>
+<main>
+<section class="container review-hero">
+<div class="eyebrow">Первый редакторский выпуск · 8 ноября 2026</div>
+<h1>Октябрь 2026.<br><span class="accent">Десять идей с GitHub.</span></h1>
+<p class="hero-lead">Агенты, локальный OCR, робототехника, типизация SQL и инструменты разработки. Мы выбрали проекты не по максимальному количеству звёзд, а по интересной инженерной задаче.</p>
+<div class="review-meta"><span class="tag green">10 проектов в обзоре</span><span class="tag">937 в выборке октября</span><span class="tag amber">Не рейтинг роста</span></div>
+<aside class="notice"><strong>Что проверено:</strong> сведения из README и документации, а также значения звёзд в снимке GitHub от 8 ноября. <strong>Что не проверено:</strong> работу кода, заявления авторов о скорости и безопасности, фактическое лицензирование всех компонентов. Четыре из пяти октябрьских диапазонов звёзд неполные.</aside>
+</section>
+<div class="container review-layout">
+<article class="prose">
+<section>
+<h2>Что здесь действительно интересного?</h2>
+<p class="lead">Наиболее заметный мотив октября — переход от «ещё одной оболочки для LLM» к инфраструктуре, которая выполняет работу: управляет действиями, связывает агентов, проверяет диффы, распознаёт документы и управляет реальными симуляциями.</p>
+<p>Это лишь редакторское наблюдение по небольшой отобранной десятке, а не доказанный сдвиг всей экосистемы GitHub. Значения звёзд ниже — <strong>общие</strong> на 8 ноября, не прирост в октябре.</p>
+</section>
+<section class="project-section" id="openduet">
+<h2><span class="rank">01</span>OpenDuet</h2><p class="muted">CopilotKit · 1 998 ★ · проактивные AI-агенты</p>
+<p>Проактивный помощник с очередью задач, каналами общения и согласованием действий. Для архитектуры агентов особенно полезна концепция отдельного вычислительного пространства, approval gateway и журнала выполненных операций.</p>
+<p><strong>Вопрос к проекту:</strong> где проходит граница самостоятельности? В документации указана зависимость от CopilotKit Intelligence, включая ключ и функции хранения. Поэтому это не автоматически полностью локальная и независимая система.</p>
+<a href="https://github.com/CopilotKit/OpenDuet" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section class="project-section" id="indra">
+<h2><span class="rank">02</span>Indra OCR</h2><p class="muted">datalab-to · 1 682 ★ · документы и локальный OCR</p>
+<p>OCR с распознаванием структуры сканов, таблиц и страниц, экспортом в Markdown и JSON. Интересен как кандидат для воспроизводимого сравнения на реальных документах с локальным baseline.</p>
+<p><strong>Важная лицензия:</strong> код заявлен под Apache-2.0, но модельные веса поставляются с отдельной modified OpenRAIL-M. Это нельзя описывать как безусловно открытый для любого использования пакет. Скорость и точность авторских benchmark требуют проверки на собственном датасете.</p>
+<a href="https://github.com/datalab-to/indra" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section class="project-section" id="reason">
+<h2><span class="rank">03</span>Reason Network</h2><p class="muted">reason-machines · 1 674 ★ · взаимодействие агентов</p>
+<p>Система связи между сеансами Codex, Claude Code и других coding agents на разных машинах. Это отдельный коммуникационный слой, а не замена воспроизводимой истории задач и коммитов.</p>
+<p><strong>Ограничение:</strong> заявления об E2EE, daemon и настройке ключей требуют независимого threat model. Не стоит сразу устанавливать программу в профиле с рабочими секретами.</p>
+<a href="https://github.com/reason-machines/reason-network" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section class="project-section" id="pomerado">
+<h2><span class="rank">04</span>Pomerado</h2><p class="muted">Pomerado · 1 578 ★ · MCP и веб-интерфейсы</p>
+<p>Генерирует повторяемые MCP-интеграции для сайтов, где официального API может не быть. Идея интереснее обычного браузерного агента: один раз разобраться в интерфейсе, затем переиспользовать структурированный маршрут.</p>
+<p><strong>Ограничение:</strong> для генерации интеграции нужен OpenAI API key и браузер. Условия сайтов и безопасность сессий остаются отдельными вопросами.</p>
+<a href="https://github.com/Pomerado/pomerado" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section class="project-section" id="reylo">
+<h2><span class="rank">05</span>Reylo</h2><p class="muted">colinhacks · 1 544 ★ · SQL/TypeScript</p>
+<p>Инструмент проверки SQL-запросов с выводом типов непосредственно в TypeScript. Потенциально полезен, когда AI coding agents регулярно изменяют и SQL, и прикладной код.</p>
+<p><strong>Ограничение:</strong> экспериментальная версия TypeScript и внешние преобразователи кода. Для Python-проектов готовой выгоды не обещаем.</p>
+<a href="https://github.com/colinhacks/reylo" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section class="project-section" id="rp1">
+<h2><span class="rank">06</span>RoboParty RP1</h2><p class="muted">Roboparty · 1 167 ★ · open hardware</p>
+<p>Гуманоидный проект с отдельными репозиториями механики, электроники, BOM, прошивок и роботных моделей. Особенно полезен как пример публикации полного аппаратно-программного стека, а не одного STL-файла.</p>
+<p><strong>Ограничение:</strong> у компонентов разные лицензии; в аппаратных исходниках заявляется CERN-OHL-W-2.0. Открытые чертежи не доказывают простоту изготовления, доступность деталей или устойчивую ходьбу.</p>
+<a href="https://github.com/Roboparty/RP1" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section class="project-section" id="timestral">
+<h2><span class="rank">07</span>Timestral</h2><p class="muted">Mistral · 1 152 ★ · прогнозирование</p>
+<p>Семейство компактных моделей для прогнозирования временных рядов. Интересное направление для будущих сравнений с простыми статистическими baseline на экономических или сенсорных данных.</p>
+<p><strong>Ограничение:</strong> открытый код и лицензия весов — разные вопросы. Авторские benchmark ещё не воспроизводились независимо.</p>
+<a href="https://github.com/mistralai/timestral" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section class="project-section" id="kanzo">
+<h2><span class="rank">08</span>Kanzo</h2><p class="muted">emanuele-em · 1 116 ★ · управление задачами</p>
+<p>Лёгкая локальная Kanban-доска с SQLite, Git-синхронизацией и MCP. Удобный контраст сложным платформам управления задачами.</p>
+<p><strong>Безопасность:</strong> по README сетевой веб-доступ не имеет встроенной авторизации. Тестировать только локально, без доступа из интернета и без секретов.</p>
+<a href="https://github.com/emanuele-em/kanzo" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section class="project-section" id="openqodex">
+<h2><span class="rank">09</span>OpenQodex</h2><p class="muted">openqodex · 1 059 ★ · AI code review</p>
+<p>Второй проход по изменениям: статические сканеры и отдельный coding agent проверяют diff перед push. Полезно исследовать, помогает ли независимость reviewer обнаруживать реальные ошибки.</p>
+<p><strong>Ограничение:</strong> для полного AI review требуется Codex либо Claude Code. Перед передачей приватного кода нужна отдельная политика данных и разрешений.</p>
+<a href="https://github.com/openqodex/openqodex" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section class="project-section" id="lyapunov">
+<h2><span class="rank">10</span>Lyapunov</h2><p class="muted">ManfredCh · 1 030 ★ · физика и роботы</p>
+<p>3D-среда для роботов, симуляции MuJoCo, управления состоянием и сенсорных наблюдений, с опциональными LLM-функциями. Отличный повод проверить весь путь от модели до воспроизводимого движения.</p>
+<p><strong>Ограничение:</strong> документированная платформа — Linux x64, не нативный Mac ARM64. Сам факт импорта модели не означает, что физика настроена и походка работоспособна.</p>
+<a href="https://github.com/ManfredCh/Lyapunov" target="_blank" rel="noopener noreferrer">GitHub проекта ↗</a>
+</section>
+<section id="method" class="project-section">
+<h2>Методика и ограничения</h2>
+<p>Снимок GitHub получен 8 ноября 2026 года, проекты сгруппированы по датам создания в октябре. Было сохранено 937 репозиториев с 50–2 000 звёзд на дату снимка. Четыре из пяти диапазонов не покрывают все найденные GitHub результаты. Поэтому десятка не претендует на полноту.</p>
+<p>Проекты отобраны редакционно по новизне сценария, доступности документации и возможности проверки. Значение SPDX приходит от GitHub и не гарантирует свободу использования моделей, наборов данных и аппаратных файлов. Ни один из десяти проектов не был запущен или подвергнут независимому security audit.</p>
+<p>Самое важное: <strong>общее число звёзд на 8 ноября не равно приросту за октябрь</strong>. Для измерения роста нужны повторные снимки одних и тех же GitHub ID.</p>
+<p>Все десять названий и ссылки доступны в <a href="./index.html#catalog">помесячном каталоге</a>. Для первых реальных опытов логично выбрать Indra OCR, OpenQodex и Lyapunov — в отдельных изолированных средах с фиксированными тестовыми наборами.</p>
+</section>
+<p><a class="button secondary" href="./index.html#catalog">Перейти к каталогу</a></p>
+</article>
+<aside class="toc" aria-label="Содержание обзора">
+<div class="eyebrow">Содержание</div>
+<a href="#openduet">01 · OpenDuet</a><a href="#indra">02 · Indra OCR</a><a href="#reason">03 · Reason Network</a><a href="#pomerado">04 · Pomerado</a><a href="#reylo">05 · Reylo</a><a href="#rp1">06 · RoboParty RP1</a><a href="#timestral">07 · Timestral</a><a href="#kanzo">08 · Kanzo</a><a href="#openqodex">09 · OpenQodex</a><a href="#lyapunov">10 · Lyapunov</a><a href="#method">Методика</a>
+</aside>
+</div>
+</main>
+<footer class="site-footer"><div class="container footer-inner"><div><strong>OSS Radar</strong><div>Редакторский обзор, не инвестиционный или security-рейтинг.</div></div><div class="footer-links"><a href="./index.html">Главная</a><a href="https://github.com/Dmitry-dev-pet/oss-radar-site" target="_blank" rel="noopener noreferrer">GitHub репозитория ↗</a></div></div></footer>
+</body></html>
