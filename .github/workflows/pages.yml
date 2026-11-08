@@ -6,6 +6,8 @@ on:
     paths:
       - 'index.html'
       - 'october.html'
+      - 'trends.html'
+      - 'trends.js'
       - 'app.js'
       - 'style.css'
       - 'data/**'
@@ -41,6 +43,10 @@ jobs:
           set -euo pipefail
           test -s index.html
           test -s october.html
+          test -s trends.html
+          test -s trends.js
+          node --check trends.js
+          node --test tests/trends.test.js
           test -s style.css
           test -s app.js
           test -s data/manifest.json
@@ -61,7 +67,7 @@ jobs:
           print("Validated 13 public monthly datasets and 12,188 records")
           PY
           mkdir -p _site
-          cp index.html october.html style.css app.js _site/
+          cp index.html october.html trends.html trends.js style.css app.js _site/
           cp -R data _site/
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
