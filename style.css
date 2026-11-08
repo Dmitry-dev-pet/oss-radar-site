@@ -14,3 +14,15 @@ a{color:inherit;text-decoration:none}a:focus-visible,button:focus-visible,input:
 @media(max-width:960px){.filters{grid-template-columns:1fr 1fr}.featured-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.review-layout{grid-template-columns:1fr}.toc{position:static;order:-1}.method{grid-template-columns:1fr}}
 @media(max-width:600px){.container{width:calc(100% - 28px)}.header-inner{min-height:60px}.nav{gap:12px;font-size:.77rem}.nav a.optional{display:none}.hero{padding:52px 0 25px}.hero-actions .button{flex:1}.stats{gap:7px;margin:35px 0 0}.stat{padding-left:10px}.stat-number{font-size:1.45rem}.stat-label{font-size:.7rem}.section{padding:34px 0}.section-head{align-items:flex-start;flex-direction:column;gap:10px}.featured-grid,.catalog-grid,.compact-list{grid-template-columns:1fr}.feature-card{min-height:220px}.filters{grid-template-columns:1fr 1fr;padding:12px;gap:10px}.filters .search-field{grid-column:1/-1}.filter-line{align-items:start}.footer-inner{flex-direction:column}.review-hero{padding:35px 0 8px}.review-layout{gap:20px;padding-bottom:45px}.review-table{font-size:.76rem}.review-table th,.review-table td{padding:7px}.project-card{min-height:162px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Reuse public provider feeds and the official GitHub star-history endpoint. */
+.trend-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:auto;font-size:.85rem}
+.history-form{display:flex;align-items:end;gap:14px;flex-wrap:wrap;padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--surface);max-width:760px}
+.history-form .field{flex:1;min-width:195px}
+.history-weeks{display:grid;gap:10px;margin:20px 0 24px;max-width:760px}
+.week-row{display:grid;grid-template-columns:minmax(100px,190px) minmax(80px,1fr) 90px;align-items:center;gap:14px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface);font-size:.83rem}
+.week-row meter{width:100%;height:22px;accent-color:var(--accent)}
+.week-row .stars{text-align:right}
+.history-summary{padding:10px 0;max-width:760px}
+.project-meta .subtle-link{font-size:.7rem;margin-left:auto}
+@media(max-width:600px){.week-row{grid-template-columns:100px minmax(55px,1fr) 55px;gap:8px;font-size:.72rem}.trend-actions{font-size:.8rem}}
