@@ -7,7 +7,8 @@ import json
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC = [ROOT / "index.html", ROOT / "reviews" / "2026-11-08.html"]
+ORIGINAL = ROOT / "reviews" / "2026-11-08.html"
+PUBLIC = [ROOT / "index.html", *sorted((ROOT / "reviews").glob("*.html"))]
 
 
 class InspectHTML(HTMLParser):
@@ -57,7 +58,7 @@ class TestEditorialOnly(unittest.TestCase):
                     self.assertTrue(target.is_file(), href)
 
     def test_trend_signal_and_original_readmes_required(self):
-        page = PUBLIC[1].read_text(encoding="utf-8")
+        page = ORIGINAL.read_text(encoding="utf-8")
         self.assertIn("GitHub Trending Today", page)
         self.assertIn("06:58 UTC", page)
         self.assertIn("2026", page)
@@ -78,6 +79,9 @@ class TestEditorialOnly(unittest.TestCase):
         items = catalog["articles"]
         self.assertEqual(len(items), len({x["id"] for x in items}))
         self.assertTrue(items)
+        self.assertGreaterEqual(len(items), 7)
+        self.assertEqual(sum(x["type"]=="weekly" for x in items),5)
+        self.assertEqual(sum(x["type"]=="monthly" for x in items),1)
         for row in items:
             self.assertIn(row["type"], allowed)
             self.assertRegex(row["date"], r"^\d{4}-\d{2}-\d{2}$")
@@ -88,6 +92,17 @@ class TestEditorialOnly(unittest.TestCase):
             self.assertTrue(row["trending_seen_at"])
             self.assertTrue(row["trending_evidence"].startswith("https://"))
             self.assertIn(row["verification"], {"documentation","source","executed"})
+        for row in items:
+            if row["url"].startswith("reviews/2026-10-"):
+                self.assertRegex(row["period_start"],r"^2026-10-\\d{2}$")
+                self.assertRegex(row["period_end"],r"^2026-10-\\d{2}$")
+                self.assertLessEqual(row["period_start"],row["period_end"])
+                page=(ROOT / row["url"]).read_text(encoding="utf-8")
+                self.assertIn("GitStock",page)
+                self.assertIn("23:00 UTC",page)
+                self.assertIn("gitstock.org/api/v1/github/trending?",page)
+                self.assertTrue(all('https://github.com/'+x in page for x in row["projects"]),row["url"])
+                self.assertTrue("Код не" in page or "код не" in page,row["url"])
         client = (ROOT / "review-catalog.js").read_text(encoding="utf-8")
         self.assertIn('fetch("./reviews/catalog.json"', client)
         self.assertNotIn("githubtrending.today/api",client)
