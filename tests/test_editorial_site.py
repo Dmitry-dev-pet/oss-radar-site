@@ -144,25 +144,29 @@ class TestEditorialOnly(unittest.TestCase):
             self.assertIn('id="community"', page)
             self.assertIn('id="sources"', page)
 
-    def test_project_analysis_per_week(self):
-        for stem, expected in [
-            ("2026-09-28-10-04", 7),
-            ("2026-10-05-11", 7),
-            ("2026-10-12-18", 6),
-            ("2026-10-19-25", 6),
-        ]:
-            html = (ROOT / "reviews" / (stem + ".html")).read_text(encoding="utf-8")
-            self.assertEqual(html.count('class="project-analysis"'), expected, stem)
-            self.assertEqual(html.count("<strong>Механизм.</strong>"), expected, stem)
-            self.assertEqual(html.count("<strong>Отличие от альтернатив.</strong>"), expected, stem)
-            self.assertEqual(html.count("<strong>Что подтверждать на практике.</strong>"), expected, stem)
-            self.assertIn('id="assessment"', html)
-        published = json.loads((ROOT / "reviews/catalog.json").read_text(encoding="utf-8"))["articles"]
-        self.assertEqual({x["type"] for x in published}, {"weekly", "monthly"})
-        self.assertNotIn("reviews/2026-10-26-31.html", {x["url"] for x in published})
-        self.assertNotIn("reviews/2026-11-08.html", {x["url"] for x in published})
-        last_week = (ROOT / "reviews/2026-10-19-25.html").read_text(encoding="utf-8")
-        self.assertNotIn('href="./2026-10-26-31.html"', last_week)
+    def test_release_first_editorial_structure(self):
+        expected = {"2026-09-28-10-04": 3, "2026-10-05-11": 5,
+                    "2026-10-12-18": 4, "2026-10-19-25": 5}
+        for stem, count in expected.items():
+            page = (ROOT / "reviews" / (stem + ".html")).read_text(encoding="utf-8")
+            self.assertEqual(page.count('class="change-event"'), count)
+            self.assertLess(page.index('id="updates"'), page.index('id="community"'))
+            self.assertLess(page.index('id="community"'), page.index('id="growth"'))
+            self.assertIn("releases/tag/", page)
+            self.assertIn('id="context"', page)
+            self.assertNotIn('class="project-analysis"', page)
+        articles = json.loads((ROOT / "reviews/catalog.json").read_text(encoding="utf-8"))["articles"]
+        self.assertEqual({x["editorial_mode"] for x in articles}, {"release_issues_reddit_first"})
+        self.assertNotIn("reviews/2026-10-26-31.html", {x["url"] for x in articles})
+        self.assertNotIn("reviews/2026-11-08.html", {x["url"] for x in articles})
+        month = (ROOT / "reviews/2026-10-month.html").read_text(encoding="utf-8")
+        for word in ("CVE-2026-109618", "CVE-2026-109619",
+                     'id="agents"', 'id="nonai"', 'id="reddit-signal"'):
+            self.assertIn(word, month)
+        self.assertLess(month.index('id="agents"'), month.index('id="repeat"'))
+        home = (ROOT / "index.html").read_text(encoding="utf-8")
+        self.assertNotIn('href="./reviews/2026-11-08.html"', home)
+        self.assertIn('href="./reviews/2026-10-month.html"', home)
 
     def test_reddit_evidence_is_visible_and_attributed(self):
         catalog = json.loads((ROOT / "reviews/catalog.json").read_text(encoding="utf-8"))

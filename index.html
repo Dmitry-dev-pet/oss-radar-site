@@ -21,8 +21,8 @@
 <main id="main">
   <section class="container hero">
     <div class="eyebrow">Критический разбор open-source проектов</div>
-    <h1>Тренды — повод.<br><span class="accent">Разбор — главное.</span></h1>
-    <p class="hero-lead">Отбираем проекты, появившиеся в трендах GitHub, и выясняем, есть ли за популярностью интересная архитектура, работающая идея и польза на практике.</p>
+    <h1>События важнее звёзд.<br><span class="accent">Объясняем изменения.</span></h1>
+    <p class="hero-lead">Начинаем с релизов, PR, исправленных ошибок и обсуждений Reddit — и объясняем, почему эти изменения имеют значение.</p>
     <p class="intro-note">Здесь нет бесконечного каталога, автоматического топа по звёздам и советов устанавливать непроверенный код. Только редакторские обзоры с источниками и ограничениями. Каталог ниже позволяет искать именно публикации.</p>
   </section>
 
@@ -57,23 +57,18 @@
     </div>
     <p id="reviewCount" class="review-counter" aria-live="polite">Загружаем каталог публикаций…</p>
     <div id="reviewCards" class="archive-grid">
-      <article class="lead-review archive-review">
-        <div class="issue-meta"><span class="meta-item">8 ноября 2026</span><span class="meta-item">Сравнение · документальный разбор</span></div>
-        <h3>Четыре подхода к агентной инфраструктуре</h3>
-        <p>Браузерная автоматизация, безопасность, локальные боты и управление контекстом.</p>
-        <a class="button" href="./reviews/2026-11-08.html">Читать разбор</a>
-      </article>
+      <article class="lead-review archive-review"><div class="issue-meta"><span class="meta-item">Октябрь 2026</span><span class="meta-item">Месячная аналитика</span></div><h3>Октябрь 2026: чем действительно занимались open-source проекты</h3><p>От новых процессов разработки до критических патчей PHP: пять инженерных историй месяца.</p><a class="button" href="./reviews/2026-10-month.html">Читать аналитику</a></article>
     </div>
     <p id="reviewEmpty" class="intro-note" hidden>Пока нет опубликованных материалов с выбранными фильтрами. Исследования без проверки не публикуем.</p>
-    <noscript><p class="intro-note">Поиск по каталогу требует JavaScript; опубликованный разбор доступен по ссылке выше.</p></noscript>
+    <noscript><p class="intro-note">Поиск требует JavaScript; месячная аналитика доступна по ссылке выше.</p></noscript>
   </section>
 
   <section class="container section" id="method" aria-labelledby="method-heading">
     <div class="eyebrow">Как выбираем темы</div><h2 id="method-heading">Из тренда — в исследование</h2>
     <div class="method-grid">
       <div><div class="method-index">01</div><h3>Сигнал</h3><p>Проект должен быть зафиксирован в датированном дневном, недельном или месячном GitHub Trending. Указываем дату, источник и условия отбора.</p></div>
-      <div><div class="method-index">02</div><h3>Проверка</h3><p>Читаем оригинальные README и техническую документацию, ищем код, лицензии, зависимости, доверенные границы и альтернативные решения.</p></div>
-      <div><div class="method-index">03</div><h3>Вывод</h3><p>Отделяем наблюдаемые факты от утверждений автора и нашей оценки. Называем конкретный эксперимент, который подтвердит или опровергнет пользу.</p></div>
+      <div><div class="method-index">02</div><h3>История проекта</h3><p>Сопоставляем релизы, PR и issues с прежними версиями; проверяем Reddit и отделяем анонсы от независимого опыта.</p></div>
+      <div><div class="method-index">03</div><h3>Аналитика</h3><p>Сопоставляем события и ограничения. Собственное тестирование возможно, но не является условием качественного обзора.</p></div>
     </div>
     <p class="method-detail">Популярность — лишь способ заметить проект, а не оценка его качества. Трендовые списки и сырые выборки служат редакции исходными материалами, но не публикуются как отдельные разделы этого сайта. <a href="https://githubtrending.today/methodology/" target="_blank" rel="noopener noreferrer">Методика поставщика трендов</a> · <a href="https://github.com/Dmitry-dev-pet/oss-radar-site" target="_blank" rel="noopener noreferrer">Исходники сайта</a>.</p>
   </section>

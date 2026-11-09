@@ -13,9 +13,9 @@
     {
       "id": "R-20260928-1004-gitstock",
       "date": "2026-11-09",
-      "title": "Агентам нужны не только способности, но и ограничения",
+      "title": "Правила агентов встретились с реальными ограничениями",
       "subtitle": "Полная неделя · 28 сентября — 4 октября 2026",
-      "summary": "OpenShell, Ponytail и инженерные skills: почему ограничения, тесты и дисциплина важнее нового промпта; обсуждения Reddit с прямыми ссылками и редакционной оценкой.",
+      "summary": "OpenShell исправлял сетевые границы, Skills добавил работу с графом задач, а сторонний тест OpenShell показал, почему параметры политики важнее обещания «безопасная песочница».",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
@@ -42,14 +42,16 @@
       "url": "reviews/2026-09-28-10-04.html",
       "project_analysis": "mechanism_alternatives_verification",
       "reddit_examples_count": 4,
-      "reddit_provenance": "editorially_selected_dated_public_posts"
+      "reddit_provenance": "editorially_selected_dated_public_posts",
+      "editorial_mode": "release_issues_reddit_first",
+      "events_count": 3
     },
     {
       "id": "R-202610-05-11-gitstock",
       "date": "2026-11-09",
-      "title": "AI учится работать с существующим программным обеспечением",
+      "title": "REA и рабочие процессы: новые версии важнее вирусных анонсов",
       "subtitle": "Ретроспективный недельный разбор · 05–11 октября 2026",
-      "summary": "REA и AnyPS5: инструменты изучения и переноса существующего ПО; визуальные редакторы, e2e, openGym; обсуждения Reddit с прямыми ссылками и редакционной оценкой.",
+      "summary": "REA последовательно менял MCP и Evidence, Ponytail переписал аудит, а openGym выпустил огромное обновление каталога и исправил ошибки пользователей уже на следующий день.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
@@ -76,14 +78,16 @@
       "url": "reviews/2026-10-05-11.html",
       "project_analysis": "mechanism_alternatives_verification",
       "reddit_examples_count": 3,
-      "reddit_provenance": "editorially_selected_dated_public_posts"
+      "reddit_provenance": "editorially_selected_dated_public_posts",
+      "editorial_mode": "release_issues_reddit_first",
+      "events_count": 5
     },
     {
       "id": "R-202610-12-18-gitstock",
       "date": "2026-11-09",
-      "title": "Локальный голос и научные навыки: инструменты становятся практичнее",
+      "title": "После первого всплеска REA развивал проверяемость результатов",
       "subtitle": "Ретроспективный недельный разбор · 12–18 октября 2026",
-      "summary": "VoiceStudio, REA, Scientific Agent Skills и CLI-Anything: локальные процессы и проверяемость; обсуждения Reddit с прямыми ссылками и редакционной оценкой.",
+      "summary": "Релизы REA 6.5–6.7 сделали работу с Evidence удобнее, Graphify исправил ошибки AST-графа, а VoiceStudio собрал внимание ещё до подтверждённых мобильных релизов.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
@@ -110,14 +114,16 @@
       "url": "reviews/2026-10-12-18.html",
       "project_analysis": "mechanism_alternatives_verification",
       "reddit_examples_count": 3,
-      "reddit_provenance": "editorially_selected_dated_public_posts"
+      "reddit_provenance": "editorially_selected_dated_public_posts",
+      "editorial_mode": "release_issues_reddit_first",
+      "events_count": 4
     },
     {
       "id": "R-202610-19-25-gitstock",
       "date": "2026-11-09",
-      "title": "Проверяемость выходит на первый план — от аудита к роботам",
+      "title": "PHP устраняет критические RCE, агенты чинят свою инфраструктуру",
       "subtitle": "Ретроспективный недельный разбор · 19–25 октября 2026",
-      "summary": "Security Audit Skill, Orca, Graphify и Microduck: проверка безопасности, графов кода и роботов; обсуждения Reddit с прямыми ссылками и редакционной оценкой.",
+      "summary": "21 октября PHP выпустил экстренные патчи; OpenShell и Graphify ужесточали безопасность, Orca исправлял работу сессий, а обсуждения Microduck показывали разницу между симуляцией и физическим роботом.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
@@ -145,14 +151,16 @@
       "url": "reviews/2026-10-19-25.html",
       "project_analysis": "mechanism_alternatives_verification",
       "reddit_examples_count": 5,
-      "reddit_provenance": "editorially_selected_dated_public_posts"
+      "reddit_provenance": "editorially_selected_dated_public_posts",
+      "editorial_mode": "release_issues_reddit_first",
+      "events_count": 5
     },
     {
       "id": "R-202610-month-gitstock",
       "date": "2026-11-09",
-      "title": "Октябрь 2026: как open-source агенты получают инфраструктуру",
+      "title": "Октябрь 2026: чем действительно занимались open-source проекты",
       "subtitle": "Месячная аналитика по полному архиву из 31 даты",
-      "summary": "380 попаданий, 139 проектов: устойчивые инженерные темы — действия агентов, память, безопасность, управляемость медиа и не-ИИ решения.",
+      "summary": "Пять историй по релизам и отзывам: навыки агентов, развитие REA, надёжность инфраструктуры, критические исправления PHP и новые сценарии вне AI.",
       "type": "monthly",
       "verification": "documentation",
       "tags": [
@@ -178,7 +186,9 @@
       "period_end": "2026-10-31",
       "period_label": "Октябрь 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
-      "url": "reviews/2026-10-month.html"
+      "url": "reviews/2026-10-month.html",
+      "editorial_mode": "release_issues_reddit_first",
+      "events_count": 5
     }
   ]
 }

@@ -164,3 +164,13 @@ p { margin:0 0 1.3em; }
 .reddit-crossref{font-size:.88rem;margin:12px 0}
 .reddit-crossref a{white-space:normal}
 @media(max-width:600px){.reddit-evidence{padding:14px}.reddit-meta{gap:5px 10px}}
+
+/* Project-first editorial chronology: release evidence is central, social and popularity follow. */
+.change-events{display:grid;gap:17px;margin:20px 0 29px}
+.change-event{padding:18px 20px;border:1px solid var(--line);border-radius:12px;background:rgba(20,36,48,.75);scroll-margin-top:90px}
+.change-event h3{margin:10px 0 14px;font-size:1.18rem;letter-spacing:-.015em;line-height:1.35}
+.change-event p{font-size:.94rem;margin:0 0 12px}
+.change-event p:last-child{margin-bottom:0}
+.change-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;font-weight:680;color:var(--accent)}
+.change-meta a{font-weight:500}
+@media(max-width:600px){.change-event{padding:14px}.change-event h3{font-size:1.08rem}}
