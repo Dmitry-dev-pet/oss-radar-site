@@ -1,0 +1,43 @@
+name: Reddit archive panel — research only
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/reddit_panel.py'
+      - 'tests/test_reddit_panel.py'
+      - '.github/workflows/reddit-panel.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Historical panel scope"
+        required: true
+        default: "full"
+        type: choice
+        options: [full, pilot]
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify parser and conservative coverage contracts
+        run: python3 -m unittest discover -s tests -p 'test_reddit_panel.py' -v
+      - name: Collect fixed subreddit panel without user content
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _reddit_research
+          python3 scripts/reddit_panel.py --workers 3 --output _reddit_research/reddit-panel-2026-10.json
+      - name: Store research-only snapshot, not a Pages file
+        uses: actions/upload-artifact@v4
+        with:
+          name: reddit-panel-october-2026
+          path: _reddit_research/reddit-panel-2026-10.json
+          retention-days: 14
