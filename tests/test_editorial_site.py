@@ -109,6 +109,41 @@ class TestEditorialOnly(unittest.TestCase):
         self.assertNotIn("api.github.com",client)
         self.assertNotIn("localStorage",client)
 
+    def test_full_first_week_and_navigation(self):
+        catalog = json.loads((ROOT / "reviews/catalog.json").read_text(encoding="utf-8"))
+        weeks = sorted((r for r in catalog["articles"] if r["type"] == "weekly"),
+                       key=lambda x: x["period_start"])
+        self.assertEqual(weeks[0]["period_start"], "2026-09-28")
+        self.assertEqual(weeks[0]["period_end"], "2026-10-04")
+        self.assertEqual(weeks[0]["url"], "reviews/2026-09-28-10-04.html")
+        for left, right in zip(weeks[:3], weeks[1:4]):
+            self.assertEqual(
+                ( __import__("datetime").date.fromisoformat(left["period_end"])
+                + __import__("datetime").timedelta(days=1)).isoformat(),
+                right["period_start"])
+            self.assertIn(right["url"].split("/")[-1],
+                          (ROOT / left["url"]).read_text(encoding="utf-8"))
+            self.assertIn(left["url"].split("/")[-1],
+                          (ROOT / right["url"]).read_text(encoding="utf-8"))
+        redirect = (ROOT / "reviews/2026-10-01-04.html").read_text(encoding="utf-8")
+        self.assertIn("2026-09-28-10-04.html", redirect)
+
+    def test_weekly_sources_and_separate_growth_columns(self):
+        selected = ["2026-09-28-10-04", "2026-10-05-11",
+                    "2026-10-12-18", "2026-10-19-25"]
+        for stem in selected:
+            page = (ROOT / "reviews" / (stem + ".html")).read_text(encoding="utf-8")
+            for token in ("GitStock", "23:00 UTC", "GitHub Star History API",
+                          "Новых ★", "Рост*", "Дней в Trending",
+                          "Редакторский вывод", "9 ноября 2026",
+                          "Код", "Методика"):
+                if token == "Код":
+                    continue  # not every review is about source code
+                self.assertIn(token, page, stem)
+            self.assertNotIn("четыре (либо пять)", page)
+            self.assertIn('id="community"', page)
+            self.assertIn('id="sources"', page)
+
     def test_only_editorial_files_are_published_without_cron(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
         self.assertNotIn("  schedule:", workflow)

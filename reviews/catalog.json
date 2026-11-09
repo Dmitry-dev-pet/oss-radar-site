@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-08",
+  "updated_at": "2026-11-09",
   "description": "Редакторские разборы из датированных GitHub Trending; не каталог репозиториев",
   "review_types": {
     "weekly": "Обзор недели",
@@ -35,11 +35,11 @@
       "url": "reviews/2026-11-08.html"
     },
     {
-      "id": "R-202610-01-04-gitstock",
+      "id": "R-20260928-1004-gitstock",
       "date": "2026-11-09",
-      "title": "Первые дни октября: агенты требуют контроля, памяти и навыков",
-      "subtitle": "Ретроспективный недельный разбор · 01–04 октября 2026",
-      "summary": "Политики доступа OpenShell, контекстный фильтр context-mode, доступ к внешним ресурсам Agent-Reach и дизайн-проверки Impeccable.",
+      "title": "Агентам нужны не только способности, но и ограничения",
+      "subtitle": "Полная неделя · 28 сентября — 4 октября 2026",
+      "summary": "OpenShell, Ponytail и инженерные skills: почему ограничения, тесты и дисциплина важнее нового промпта.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
@@ -48,38 +48,44 @@
         "DevTools"
       ],
       "projects": [
+        "DietrichGebert/ponytail",
         "NVIDIA/OpenShell",
-        "mksglu/context-mode",
+        "mattpocock/skills",
         "Panniantong/Agent-Reach",
-        "pbakaus/impeccable"
+        "pbakaus/impeccable",
+        "obra/superpowers",
+        "mksglu/context-mode"
       ],
       "trending_source": "GitStock (saved GitHub Trending all-language daily archive)",
       "trending_seen_at": "2026-10-04T23:00:00Z",
       "trending_evidence": "https://gitstock.org/api/v1/github/trending?period=daily&date=2026-10-04",
-      "period_start": "2026-10-01",
+      "period_start": "2026-09-28",
       "period_end": "2026-10-04",
-      "period_label": "01–04 октября 2026",
+      "period_label": "28 сентября — 4 октября 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
-      "url": "reviews/2026-10-01-04.html"
+      "url": "reviews/2026-09-28-10-04.html"
     },
     {
       "id": "R-202610-05-11-gitstock",
       "date": "2026-11-09",
-      "title": "AI как интерфейс к существующему ПО",
+      "title": "AI учится работать с существующим программным обеспечением",
       "subtitle": "Ретроспективный недельный разбор · 05–11 октября 2026",
-      "summary": "AnyPS5 и совместимость бинарников, REA для анализа приложений, diagram-design и ArtCraft: четыре разных подхода к управляемым инструментам.",
+      "summary": "REA и AnyPS5: инструменты изучения и переноса существующего ПО; визуальные редакторы, e2e, openGym.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
         "Реверс-инжиниринг",
-        "Разработка",
-        "Дизайн"
+        "Совместимость",
+        "DevTools"
       ],
       "projects": [
-        "boykopovar/AnyPS5",
         "morluto/rea",
+        "boykopovar/AnyPS5",
+        "storytold/artcraft",
+        "mattpocock/skills",
         "cathrynlavery/diagram-design",
-        "storytold/artcraft"
+        "DuarteSantos8/openGym",
+        "tester-army/e2e"
       ],
       "trending_source": "GitStock (saved GitHub Trending all-language daily archive)",
       "trending_seen_at": "2026-10-11T23:00:00Z",
@@ -93,21 +99,24 @@
     {
       "id": "R-202610-12-18-gitstock",
       "date": "2026-11-09",
-      "title": "Исследовательские навыки и локальная работа с медиа",
+      "title": "Локальный голос и научные навыки: инструменты становятся практичнее",
       "subtitle": "Ретроспективный недельный разбор · 12–18 октября 2026",
-      "summary": "VoiceStudio, Scientific Agent Skills, CLI-Anything и context-mode — локальный аудиостек, научные практики и инструменты повторяемости.",
+      "summary": "VoiceStudio, REA, Scientific Agent Skills и CLI-Anything: локальные процессы и проверяемость.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
-        "Научные инструменты",
         "Аудио",
+        "Наука",
         "DevTools"
       ],
       "projects": [
+        "morluto/rea",
         "debpalash/VoiceStudio",
+        "NationalSecurityAgency/ghidra",
+        "stablyai/orca",
         "K-Dense-AI/scientific-agent-skills",
-        "HKUDS/CLI-Anything",
-        "mksglu/context-mode"
+        "mksglu/context-mode",
+        "HKUDS/CLI-Anything"
       ],
       "trending_source": "GitStock (saved GitHub Trending all-language daily archive)",
       "trending_seen_at": "2026-10-18T23:00:00Z",
@@ -121,20 +130,24 @@
     {
       "id": "R-202610-19-25-gitstock",
       "date": "2026-11-09",
-      "title": "Проверяемость и изоляция становятся продуктом",
+      "title": "Проверяемость выходит на первый план — от аудита к роботам",
       "subtitle": "Ретроспективный недельный разбор · 19–25 октября 2026",
-      "summary": "Security-audit-skill, Orca, Graphify и PHP: аудит, git worktrees, граф кода и зрелая программная инфраструктура.",
+      "summary": "Security Audit Skill, Orca, Graphify и Microduck: проверка безопасности, графов кода и роботов.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
         "Безопасность",
-        "AI-агенты",
-        "Языки программирования"
+        "Робототехника",
+        "AI-агенты"
       ],
       "projects": [
         "cloudflare/security-audit-skill",
+        "DietrichGebert/ponytail",
         "stablyai/orca",
         "Graphify-Labs/graphify",
+        "Comfy-Org/ComfyUI",
+        "NVIDIA/OpenShell",
+        "pollen-robotics/microduck",
         "php/php-src"
       ],
       "trending_source": "GitStock (saved GitHub Trending all-language daily archive)",
