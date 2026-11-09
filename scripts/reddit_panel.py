@@ -166,7 +166,7 @@ def compile_report(results: list[dict], expected_panel=PANEL, projects=PROJECTS)
             posts = sorted((p for p in posts_by_id.values() if p["week"] == i),
                            key=lambda p: p["id"])
             communities = sorted(set(p["subreddit"] for p in posts))
-            independent = len(set(p["crosspost_parent"] or p["id"] for p in posts))
+            independent = len(set((p["crosspost_parent"] or p["id"]).removeprefix("t3_") for p in posts))
             score = sum(p["score_archived"] for p in posts if p["score_archived"] is not None)
             comments = sum(p["comments_archived"] for p in posts if p["comments_archived"] is not None)
             week["projects"].append({
