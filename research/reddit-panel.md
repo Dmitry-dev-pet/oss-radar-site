@@ -1,4 +1,6 @@
-# Reddit coverage panel — OSS Radar
+# Reddit coverage panel — OSS Radar (historical experiment, paused)
+
+**Not the current editorial workflow.** For Reddit use **public web search without login or OAuth** and verify individual posts. See [Reddit editorial web-search protocol](reddit-web-search.md). The archive API experiment below is retained for reproducibility but must not be used to infer zero popularity. No authorized bulk collection is active.
 
 This is an experimental **fixed-subreddit discovery index**, not a Reddit-wide ranking.
 
