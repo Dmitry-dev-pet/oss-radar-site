@@ -41,14 +41,15 @@ function render(){
     (topic==="all"||r.tags.includes(topic)) &&
     (!q||[r.title,r.subtitle||"",r.summary,...r.tags,...(r.projects||[])]
       .join(" ").toLocaleLowerCase("ru-RU").includes(q))
-  ).sort((a,b)=>b.date.localeCompare(a.date)||a.title.localeCompare(b.title,"ru"));
+  ).sort((a,b)=>(b.period_end||b.date).localeCompare(a.period_end||a.date)||a.title.localeCompare(b.title,"ru"));
   const root=$("reviewCards");
   root.replaceChildren();
   for(const item of rows){
     const article=element("article","lead-review archive-review");
     const meta=element("div","issue-meta");
     meta.append(element("span","meta-item",REVIEW_TYPES[item.type]));
-    meta.append(element("span","meta-item",displayDate(item.date)));
+    meta.append(element("span","meta-item",item.period_label || displayDate(item.date)));
+    if(item.period_label)meta.append(element("span","meta-item","Подготовлено "+displayDate(item.date)));
     meta.append(element("span","meta-item",item.verification==="executed"?
       "Проверено экспериментом":item.verification==="source"?
       "Изучены исходники":"Документальный разбор"));
