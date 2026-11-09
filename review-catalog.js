@@ -50,6 +50,7 @@ function render(){
     meta.append(element("span","meta-item",REVIEW_TYPES[item.type]));
     meta.append(element("span","meta-item",item.period_label || displayDate(item.date)));
     if(item.period_label)meta.append(element("span","meta-item","Подготовлено "+displayDate(item.date)));
+    if(Number.isInteger(item.reddit_examples_count)&&item.reddit_examples_count>0) meta.append(element("span","meta-item","Reddit: "+item.reddit_examples_count+" источника (выборка)"));
     meta.append(element("span","meta-item",item.verification==="executed"?
       "Проверено экспериментом":item.verification==="source"?
       "Изучены исходники":"Документальный разбор"));

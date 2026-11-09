@@ -164,6 +164,31 @@ class TestEditorialOnly(unittest.TestCase):
         last_week = (ROOT / "reviews/2026-10-19-25.html").read_text(encoding="utf-8")
         self.assertNotIn('href="./2026-10-26-31.html"', last_week)
 
+    def test_reddit_evidence_is_visible_and_attributed(self):
+        catalog = json.loads((ROOT / "reviews/catalog.json").read_text(encoding="utf-8"))
+        weeks = [r for r in catalog["articles"] if r["type"] == "weekly"]
+        self.assertEqual(len(weeks), 4)
+        expected = {
+            "2026-09-28-10-04": 4, "2026-10-05-11": 3,
+            "2026-10-12-18": 3, "2026-10-19-25": 5,
+        }
+        for row in weeks:
+            stem = Path(row["url"]).stem
+            count = expected[stem]
+            self.assertEqual(row.get("reddit_examples_count"), count)
+            page = (ROOT / row["url"]).read_text(encoding="utf-8")
+            self.assertEqual(page.count('class="reddit-evidence"'), count)
+            self.assertEqual(page.count('target="_blank" rel="noopener noreferrer">') >= count, True)
+            self.assertEqual(page.count('class="reddit-crossref"') >= 1, True)
+            self.assertIn('id="community"', page)
+            self.assertIn('Score', page)
+            self.assertIn('не</strong> архивная', page)
+            self.assertGreaterEqual(page.count('href="https://www.reddit.com/r/'), count)
+        month = (ROOT / "reviews/2026-10-month.html").read_text(encoding="utf-8")
+        self.assertIn('id="reddit-signal"', month)
+        client = (ROOT / "review-catalog.js").read_text(encoding="utf-8")
+        self.assertIn("reddit_examples_count", client)
+
     def test_only_editorial_files_are_published_without_cron(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
         self.assertNotIn("  schedule:", workflow)

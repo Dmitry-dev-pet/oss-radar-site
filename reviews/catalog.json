@@ -15,7 +15,7 @@
       "date": "2026-11-09",
       "title": "Агентам нужны не только способности, но и ограничения",
       "subtitle": "Полная неделя · 28 сентября — 4 октября 2026",
-      "summary": "OpenShell, Ponytail и инженерные skills: почему ограничения, тесты и дисциплина важнее нового промпта.",
+      "summary": "OpenShell, Ponytail и инженерные skills: почему ограничения, тесты и дисциплина важнее нового промпта; обсуждения Reddit с прямыми ссылками и редакционной оценкой.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
@@ -40,14 +40,16 @@
       "period_label": "28 сентября — 4 октября 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
       "url": "reviews/2026-09-28-10-04.html",
-      "project_analysis": "mechanism_alternatives_verification"
+      "project_analysis": "mechanism_alternatives_verification",
+      "reddit_examples_count": 4,
+      "reddit_provenance": "editorially_selected_dated_public_posts"
     },
     {
       "id": "R-202610-05-11-gitstock",
       "date": "2026-11-09",
       "title": "AI учится работать с существующим программным обеспечением",
       "subtitle": "Ретроспективный недельный разбор · 05–11 октября 2026",
-      "summary": "REA и AnyPS5: инструменты изучения и переноса существующего ПО; визуальные редакторы, e2e, openGym.",
+      "summary": "REA и AnyPS5: инструменты изучения и переноса существующего ПО; визуальные редакторы, e2e, openGym; обсуждения Reddit с прямыми ссылками и редакционной оценкой.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
@@ -72,14 +74,16 @@
       "period_label": "05–11 октября 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
       "url": "reviews/2026-10-05-11.html",
-      "project_analysis": "mechanism_alternatives_verification"
+      "project_analysis": "mechanism_alternatives_verification",
+      "reddit_examples_count": 3,
+      "reddit_provenance": "editorially_selected_dated_public_posts"
     },
     {
       "id": "R-202610-12-18-gitstock",
       "date": "2026-11-09",
       "title": "Локальный голос и научные навыки: инструменты становятся практичнее",
       "subtitle": "Ретроспективный недельный разбор · 12–18 октября 2026",
-      "summary": "VoiceStudio, REA, Scientific Agent Skills и CLI-Anything: локальные процессы и проверяемость.",
+      "summary": "VoiceStudio, REA, Scientific Agent Skills и CLI-Anything: локальные процессы и проверяемость; обсуждения Reddit с прямыми ссылками и редакционной оценкой.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
@@ -104,14 +108,16 @@
       "period_label": "12–18 октября 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
       "url": "reviews/2026-10-12-18.html",
-      "project_analysis": "mechanism_alternatives_verification"
+      "project_analysis": "mechanism_alternatives_verification",
+      "reddit_examples_count": 3,
+      "reddit_provenance": "editorially_selected_dated_public_posts"
     },
     {
       "id": "R-202610-19-25-gitstock",
       "date": "2026-11-09",
       "title": "Проверяемость выходит на первый план — от аудита к роботам",
       "subtitle": "Ретроспективный недельный разбор · 19–25 октября 2026",
-      "summary": "Security Audit Skill, Orca, Graphify и Microduck: проверка безопасности, графов кода и роботов.",
+      "summary": "Security Audit Skill, Orca, Graphify и Microduck: проверка безопасности, графов кода и роботов; обсуждения Reddit с прямыми ссылками и редакционной оценкой.",
       "type": "weekly",
       "verification": "documentation",
       "tags": [
@@ -137,7 +143,9 @@
       "period_label": "19–25 октября 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
       "url": "reviews/2026-10-19-25.html",
-      "project_analysis": "mechanism_alternatives_verification"
+      "project_analysis": "mechanism_alternatives_verification",
+      "reddit_examples_count": 5,
+      "reddit_provenance": "editorially_selected_dated_public_posts"
     },
     {
       "id": "R-202610-month-gitstock",

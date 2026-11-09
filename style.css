@@ -153,3 +153,14 @@ p { margin:0 0 1.3em; }
 .project-analysis p{font-size:.94rem;margin:0 0 10px;color:#ccdbe4}
 .project-analysis p:last-child{margin-bottom:0}
 @media(max-width:600px){.project-analysis{padding:14px 12px}.project-analysis p{font-size:.91rem}}
+
+/* Verifiable editorial Reddit evidence, not a popularity leaderboard. */
+.reddit-evidence-list{display:grid;gap:14px;margin:18px 0 24px}
+.reddit-evidence{border:1px solid var(--line);border-radius:12px;padding:17px 20px;background:rgba(27,43,56,.5);scroll-margin-top:95px}
+.reddit-evidence h3{font-size:1.08rem;line-height:1.4;letter-spacing:-.01em;margin:10px 0 12px}
+.reddit-evidence p{font-size:.92rem;margin:0 0 11px}
+.reddit-evidence p:last-child{margin-bottom:0}
+.reddit-meta{display:flex;flex-wrap:wrap;gap:7px 14px;font-size:.77rem;color:var(--muted)}
+.reddit-crossref{font-size:.88rem;margin:12px 0}
+.reddit-crossref a{white-space:normal}
+@media(max-width:600px){.reddit-evidence{padding:14px}.reddit-meta{gap:5px 10px}}
