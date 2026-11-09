@@ -94,8 +94,8 @@ class TestEditorialOnly(unittest.TestCase):
             self.assertIn(row["verification"], {"documentation","source","executed"})
         for row in items:
             if row["url"].startswith("reviews/2026-10-"):
-                self.assertRegex(row["period_start"],r"^2026-10-\\d{2}$")
-                self.assertRegex(row["period_end"],r"^2026-10-\\d{2}$")
+                self.assertRegex(row["period_start"],r"^2026-10-\d{2}$")
+                self.assertRegex(row["period_end"],r"^2026-10-\d{2}$")
                 self.assertLessEqual(row["period_start"],row["period_end"])
                 page=(ROOT / row["url"]).read_text(encoding="utf-8")
                 self.assertIn("GitStock",page)
