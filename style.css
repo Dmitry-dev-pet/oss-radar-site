@@ -146,3 +146,10 @@ p { margin:0 0 1.3em; }
 .table-scroll .num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .prose .method-small{font-size:.8rem;color:var(--muted);line-height:1.55}
 @media(max-width:600px){.table-scroll table th,.table-scroll table td{padding:9px 10px}.week-links{gap:9px 15px}}
+
+/* Compact project-level research blocks added to each weekly editorial issue. */
+.project-analysis{margin:18px 0;padding:17px 18px 15px;border-left:3px solid #4b8778;background:rgba(19,42,47,.52);border-radius:0 10px 10px 0}
+.project-analysis h3{font-size:1.06rem;letter-spacing:-.015em;line-height:1.35;margin:0 0 10px}
+.project-analysis p{font-size:.94rem;margin:0 0 10px;color:#ccdbe4}
+.project-analysis p:last-child{margin-bottom:0}
+@media(max-width:600px){.project-analysis{padding:14px 12px}.project-analysis p{font-size:.91rem}}

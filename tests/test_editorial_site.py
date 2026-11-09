@@ -79,8 +79,8 @@ class TestEditorialOnly(unittest.TestCase):
         items = catalog["articles"]
         self.assertEqual(len(items), len({x["id"] for x in items}))
         self.assertTrue(items)
-        self.assertGreaterEqual(len(items), 7)
-        self.assertEqual(sum(x["type"]=="weekly" for x in items),5)
+        self.assertEqual(len(items), 5)
+        self.assertEqual(sum(x["type"]=="weekly" for x in items),4)
         self.assertEqual(sum(x["type"]=="monthly" for x in items),1)
         for row in items:
             self.assertIn(row["type"], allowed)
@@ -144,6 +144,26 @@ class TestEditorialOnly(unittest.TestCase):
             self.assertIn('id="community"', page)
             self.assertIn('id="sources"', page)
 
+    def test_project_analysis_per_week(self):
+        for stem, expected in [
+            ("2026-09-28-10-04", 7),
+            ("2026-10-05-11", 7),
+            ("2026-10-12-18", 6),
+            ("2026-10-19-25", 6),
+        ]:
+            html = (ROOT / "reviews" / (stem + ".html")).read_text(encoding="utf-8")
+            self.assertEqual(html.count('class="project-analysis"'), expected, stem)
+            self.assertEqual(html.count("<strong>Механизм.</strong>"), expected, stem)
+            self.assertEqual(html.count("<strong>Отличие от альтернатив.</strong>"), expected, stem)
+            self.assertEqual(html.count("<strong>Что подтверждать на практике.</strong>"), expected, stem)
+            self.assertIn('id="assessment"', html)
+        published = json.loads((ROOT / "reviews/catalog.json").read_text(encoding="utf-8"))["articles"]
+        self.assertEqual({x["type"] for x in published}, {"weekly", "monthly"})
+        self.assertNotIn("reviews/2026-10-26-31.html", {x["url"] for x in published})
+        self.assertNotIn("reviews/2026-11-08.html", {x["url"] for x in published})
+        last_week = (ROOT / "reviews/2026-10-19-25.html").read_text(encoding="utf-8")
+        self.assertNotIn('href="./2026-10-26-31.html"', last_week)
+
     def test_only_editorial_files_are_published_without_cron(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
         self.assertNotIn("  schedule:", workflow)
@@ -154,6 +174,10 @@ class TestEditorialOnly(unittest.TestCase):
         self.assertNotIn("cp -R data", workflow)
         self.assertIn("reviews", workflow)
         self.assertIn("test_editorial_site.py", workflow)
+        self.assertNotIn("cp reviews/*.html", workflow)
+        self.assertIn('catalog["articles"]', workflow)
+        self.assertNotIn('reviews/2026-11-08.html",', workflow)
+        self.assertNotIn('reviews/2026-10-26-31.html",', workflow)
 
 
 if __name__ == "__main__":

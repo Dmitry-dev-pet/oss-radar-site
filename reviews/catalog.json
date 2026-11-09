@@ -11,30 +11,6 @@
   },
   "articles": [
     {
-      "id": "R-20261108-agent-infrastructure",
-      "date": "2026-11-08",
-      "title": "Четыре подхода к агентной инфраструктуре",
-      "subtitle": "Что действительно полезно в новых инструментах для AI-агентов?",
-      "summary": "Браузер для агентов, многоэтапный аудит, локальные боты и управление длинными диалогами — технические механизмы, ограничения и вопросы для проверки.",
-      "type": "comparison",
-      "verification": "documentation",
-      "tags": [
-        "AI-агенты",
-        "Безопасность",
-        "Инструменты разработки"
-      ],
-      "projects": [
-        "vercel-labs/agent-browser",
-        "cloudflare/security-audit-skill",
-        "milind-soni/OpenMausBot",
-        "ranxianglei/billion-context"
-      ],
-      "trending_source": "GitHub Trending Today",
-      "trending_seen_at": "2026-11-08T06:58:00Z",
-      "trending_evidence": "https://githubtrending.today/methodology/",
-      "url": "reviews/2026-11-08.html"
-    },
-    {
       "id": "R-20260928-1004-gitstock",
       "date": "2026-11-09",
       "title": "Агентам нужны не только способности, но и ограничения",
@@ -63,7 +39,8 @@
       "period_end": "2026-10-04",
       "period_label": "28 сентября — 4 октября 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
-      "url": "reviews/2026-09-28-10-04.html"
+      "url": "reviews/2026-09-28-10-04.html",
+      "project_analysis": "mechanism_alternatives_verification"
     },
     {
       "id": "R-202610-05-11-gitstock",
@@ -94,7 +71,8 @@
       "period_end": "2026-10-11",
       "period_label": "05–11 октября 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
-      "url": "reviews/2026-10-05-11.html"
+      "url": "reviews/2026-10-05-11.html",
+      "project_analysis": "mechanism_alternatives_verification"
     },
     {
       "id": "R-202610-12-18-gitstock",
@@ -125,7 +103,8 @@
       "period_end": "2026-10-18",
       "period_label": "12–18 октября 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
-      "url": "reviews/2026-10-12-18.html"
+      "url": "reviews/2026-10-12-18.html",
+      "project_analysis": "mechanism_alternatives_verification"
     },
     {
       "id": "R-202610-19-25-gitstock",
@@ -157,36 +136,8 @@
       "period_end": "2026-10-25",
       "period_label": "19–25 октября 2026",
       "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
-      "url": "reviews/2026-10-19-25.html"
-    },
-    {
-      "id": "R-202610-26-31-gitstock",
-      "date": "2026-11-09",
-      "title": "IDE для агентов, образование и дизайн без шаблонов",
-      "subtitle": "Ретроспективный недельный разбор · 26–31 октября 2026",
-      "summary": "ThinkRail и проектная память, DeepTutor, Impeccable против Hallmark, мультиагентный OpenMausBot.",
-      "type": "weekly",
-      "verification": "documentation",
-      "tags": [
-        "Редакторы и IDE",
-        "Образование",
-        "Дизайн"
-      ],
-      "projects": [
-        "JetBrains/thinkrail",
-        "HKUDS/DeepTutor",
-        "pbakaus/impeccable",
-        "Nutlope/hallmark",
-        "milind-soni/OpenMausBot"
-      ],
-      "trending_source": "GitStock (saved GitHub Trending all-language daily archive)",
-      "trending_seen_at": "2026-10-31T23:00:00Z",
-      "trending_evidence": "https://gitstock.org/api/v1/github/trending?period=daily&date=2026-10-31",
-      "period_start": "2026-10-26",
-      "period_end": "2026-10-31",
-      "period_label": "26–31 октября 2026",
-      "reference_archive": "Dmitry-dev-pet/research-lab:sources/github-trending/2026-10/gitstock-daily-archive.json",
-      "url": "reviews/2026-10-26-31.html"
+      "url": "reviews/2026-10-19-25.html",
+      "project_analysis": "mechanism_alternatives_verification"
     },
     {
       "id": "R-202610-month-gitstock",

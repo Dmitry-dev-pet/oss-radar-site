@@ -45,14 +45,28 @@ jobs:
           test -s reviews/catalog.json
           node --check review-catalog.js
           test -s style.css
-          test -s reviews/2026-11-08.html
+          test -s reviews/2026-09-28-10-04.html
           python3 -m unittest discover -s tests -p 'test_editorial_site.py' -v
           mkdir -p _site/reviews
           cp index.html style.css review-catalog.js _site/
-          cp reviews/*.html reviews/catalog.json _site/reviews/
+          cp reviews/catalog.json _site/reviews/
+          python3 - <<'PY'
+          import json
+          import shutil
+          from pathlib import Path
+          catalog = json.loads(Path("reviews/catalog.json").read_text(encoding="utf-8"))
+          for item in catalog["articles"]:
+              source = Path(item["url"])
+              assert source.parent == Path("reviews") and source.suffix == ".html"
+              assert source.is_file()
+              shutil.copy2(source, Path("_site") / source)
+          shutil.copy2("reviews/2026-10-01-04.html", "_site/reviews/2026-10-01-04.html")
+          PY
           touch _site/.nojekyll
           test -s _site/index.html
-          test -s _site/reviews/2026-11-08.html
+          test -s _site/reviews/2026-09-28-10-04.html
+          ! test -e _site/reviews/2026-11-08.html
+          ! test -e _site/reviews/2026-10-26-31.html
           test -s _site/reviews/catalog.json
           test -s _site/review-catalog.js
           ! test -e _site/trends.html
