@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Event
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -51,6 +52,7 @@ PROJECTS = (
     {"repo": "pollen-robotics/microduck", "query": "Microduck", "matches": ("microduck",)},
     {"repo": "K-Dense-AI/scientific-agent-skills", "query": "Scientific Agent Skills", "matches": ("scientific agent skills", "scientific-agent-skills")},
 )
+RATE_LIMITED = Event()
 MAX_PAGES_PER_QUERY = 3
 PAGE_LIMIT = 100
 EPOCH_START = int(datetime.fromisoformat(WEEKS[0][0]).replace(tzinfo=timezone.utc).timestamp())
@@ -94,10 +96,16 @@ def safe_post(post: dict):
     }
 
 def fetch_query(project: dict, subreddit: str, timeout=13):
+    if RATE_LIMITED.is_set():
+        return {"subreddit": subreddit, "repo": project["repo"],
+                "status": "rate_limited_skipped", "posts": []}
     before = EPOCH_END
     seen = set()
     rows = []
     for page in range(MAX_PAGES_PER_QUERY):
+        if RATE_LIMITED.is_set():
+            return {"subreddit": subreddit, "repo": project["repo"],
+                    "status": "rate_limited_skipped", "posts": rows}
         params = {
             "subreddit": subreddit,
             "query": project["query"],
@@ -118,6 +126,9 @@ def fetch_query(project: dict, subreddit: str, timeout=13):
             except (HTTPError, URLError, TimeoutError, ValueError, UnicodeError) as exc:
                 last_error = "%s:%s" % (type(exc).__name__, getattr(exc, "code", str(exc))[:80] if isinstance(getattr(exc, "code", None), str) else getattr(exc, "code", str(exc)) )
                 # An invalid query or unsupported search is not an empty result.
+                if isinstance(exc, HTTPError) and exc.code == 429:
+                    RATE_LIMITED.set()
+                    break
                 if isinstance(exc, HTTPError) and exc.code in (400, 401, 403, 404, 422):
                     break
                 if attempt == 0:
@@ -225,6 +236,10 @@ def main():
                 p["repo"], p["found_posts_lower_bound"], p["successful_subreddits"],
                 p["searched_subreddits"], p["panel_status"]), flush=True)
     print("REDDIT_ERRORS=%d REPORT=%s" % (len(result["diagnostics"]), args.output), flush=True)
+    if result["diagnostics"]:
+        print("DATA_QUALITY=BLOCKED: archive does not provide reliable panel coverage", flush=True)
+        sys.exit(2)
+    print("DATA_QUALITY=PANEL_COMPLETE; not Reddit-wide coverage", flush=True)
 
 if __name__ == "__main__":
     main()

@@ -35,7 +35,8 @@ jobs:
           set -euo pipefail
           mkdir -p _reddit_research
           python3 scripts/reddit_panel.py --workers 3 --output _reddit_research/reddit-panel-2026-10.json
-      - name: Store research-only snapshot, not a Pages file
+      - name: Store research-only snapshot, even on data-quality failure
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: reddit-panel-october-2026

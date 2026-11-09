@@ -18,3 +18,9 @@ Official Reddit [Data API rules](https://support.reddithelp.com/hc/en-us/article
 Run locally: `python3 -m unittest discover -s tests -p test_reddit_panel.py -v`; `python3 scripts/reddit_panel.py --pilot`.
 
 The corresponding GitHub Action runs only on a change to the collector or explicit dispatch. It does not run on a daily schedule, does not publish raw content to Pages and does not commit its results to `main`. Its JSON artifact expires after 14 days.
+
+## First validation result — 9 November 2026
+
+The first full run attempted 104 project × subreddit queries. Only **3 completed**, with **87 HTTP 429** rate-limit responses and **14 HTTP 422** query errors. The resulting numeric report is **not usable to rank projects**. GitHub Actions run: https://github.com/Dmitry-dev-pet/oss-radar-site/actions/runs/42601662734. A private research receipt preserves the diagnostic totals.
+
+The collector now stops attempting further queries upon HTTP 429 and explicitly fails the data-quality gate when any chosen panel query is incomplete. Its artifact is still uploaded for diagnosis. Do not interpret a collector's technical execution success as a successful popularity measurement. A defensible production Reddit metric will require authorized and stable access to a sufficiently comprehensive source; until then the website continues to show dated individual reports with clear evidence type and links, without a Reddit popularity score.
